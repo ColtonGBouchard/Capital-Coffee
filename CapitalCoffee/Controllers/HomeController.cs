@@ -1,16 +1,31 @@
-﻿using System;
+﻿using CapitalCoffee.Data.Access;
+using CapitalCoffee.Data.Models;
+using CapitalCoffee.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 namespace CapitalCoffee.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private CapitalCoffeeContext db = new CapitalCoffeeContext();
+
+        public ActionResult Index(string currentFilter, int page = 1, string searchTerm = " ")
         {
-            return View();
+            //var vm = new IndexViewModel();
+            var shopDao = new ShopDao(db);
+            var shopList = shopDao.GetAll(searchTerm, page);
+            //foreach(var shop in shopList)
+            //{
+               
+            //}
+
+            //vm.Shops = shopList;
+            return View(shopList);
         }
 
         public ActionResult About()

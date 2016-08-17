@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CapitalCoffee.Data.Models;
+using CapitalCoffee.Data.Access;
+using CapitalCoffee.Models;
 
 namespace CapitalCoffee.Controllers
 {
@@ -21,18 +23,24 @@ namespace CapitalCoffee.Controllers
         }
 
         // GET: /Shop/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Shop shop = db.Shops.Find(id);
-            if (shop == null)
-            {
-                return HttpNotFound();
-            }
-            return View(shop);
+            DetailsViewModel model = new DetailsViewModel();
+            var shopDao = new ShopDao(db);
+
+            var shop = shopDao.GetById(id);
+            var reviews = shopDao.GetReviews(id);
+            var pictures = shopDao.GetReviewPictures(id);
+            var averageRating = shopDao.GetAverageRating(id);
+            var hoursOfOperation = shopDao.GetHoursOfOperation(id);
+
+            model.SelectedShop = shop;
+            model.Reviews = reviews;
+            model.ReviewPictures = pictures;
+            model.AverageRating = averageRating;
+            model.HoursOfOperation = hoursOfOperation;
+
+            return View(model);
         }
 
         // GET: /Shop/Create

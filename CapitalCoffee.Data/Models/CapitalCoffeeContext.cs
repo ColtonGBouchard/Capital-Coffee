@@ -22,6 +22,8 @@ namespace CapitalCoffee.Data.Models
         public DbSet<User> Users { get; set; }
         public DbSet<ProfilePicture> ProfilePictures { get; set; }
         
-        public DbSet<HoursOfOperation> HoursOfOperations { get; set; }
+        public DbSet<HoursOfOperation> HoursOfOperation { get; set; }
+
+        public System.Data.Entity.DbSet<CapitalCoffee.Data.Models.Role> Roles { get; set; }
     }
 }

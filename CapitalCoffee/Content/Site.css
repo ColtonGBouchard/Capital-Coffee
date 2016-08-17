@@ -40,3 +40,77 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+#avgRating {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+}
+
+#shopInfoTable{
+    border: 1px solid black;
+    width: 900px;
+    margin: 10px;
+}
+
+#basicInfo{
+    float: left;
+    padding: 10px;
+}
+
+#hours{
+    float: right;
+    padding: 10px;
+}
+
+#hoursTable{
+    width: 200px;
+}
+#hoursTable, th, td
+{
+    border: 1px solid black;
+}
+
+th, td {
+    text-align: center;
+}
+
+#shopCarousel{
+    height: 300px;
+    width: 100%;
+}
+
+
+.carousel-inner > .item > img {
+    margin: 0 auto;
+    height: 300px;
+    width: 50%;
+}
+
+#detailsTitle{
+    text-align: center;
+}
+
+#map{
+    height: 500px;
+    width: 1000px;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+#shopListHeader{
+    background-color: lightgray;
+    height: 50px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+#shopListHeader > form {
+    padding: 10px;
+}
+
+#pager{
+    justify-content: center;
+    margin-top: 20px;
+}

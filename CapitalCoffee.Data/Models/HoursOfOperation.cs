@@ -12,8 +12,13 @@ namespace CapitalCoffee.Data.Models
         [Key]
         public int HoursId { get; set; }
         public int DayOfWeek { get; set; }
-        public DateTime MyProperty { get; set; }
+        public TimeSpan OpenTime { get; set; }
+        public TimeSpan CloseTime { get; set; }
+        public int ShopId { get; set; }
+        public bool IsActive { get; set; }
 
+
+        public Shop Shop { get; set; }
     }
 
     

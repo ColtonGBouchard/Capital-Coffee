@@ -33,5 +33,6 @@ namespace CapitalCoffee.Data.Models
 
         public List<int> ReviewIds { get; set; }
         public List<Review> Reviews { get; set; }
+
     }
 }
