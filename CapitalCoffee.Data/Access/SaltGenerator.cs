@@ -23,7 +23,6 @@ namespace CapitalCoffee.Data.Access
 
             m_cryptoServiceProvider.GetNonZeroBytes(saltBytes);
 
-            //string saltString = System.Text.Encoding.Default.GetString(saltBytes);
             string saltString = BitConverter.ToString(saltBytes);
             saltString = saltString.Replace("-", "");
             return saltString;

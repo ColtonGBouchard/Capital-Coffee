@@ -18,13 +18,15 @@
                 <input type="search" name="searchTerm" autocomplete="off" />
                 <input type="submit" value="Search By Name" class="btn btn-info" />
             </form>
+            @Html.ActionLink("Add Shop", "Create", "Shop", null, new { @class="pull-right btn btn-primary"})
         </div>
         <div class="pagedList" data-pt-target="#shopList">
             @foreach(var shop in Model)
-            {
-                <div>
-                <h4>@shop.Name</h4>
-                <h6>@shop.Address1, @shop.Address2, @shop.City, @shop.State @shop.Zip</h6>   
+            {   int output = new int();
+                <div id="singleShop">
+                <h3>@Html.ActionLink(@shop.Name, "Details", "Shop", new { id = @shop.ShopId }, null)</h3>
+                <h6>Average Rating: @shop.AverageRating</h6>
+                <h6>@shop.Address1, @shop.Address2 @shop.City, @shop.State @shop.Zip</h6>   
                 </div>
             }
         </div>

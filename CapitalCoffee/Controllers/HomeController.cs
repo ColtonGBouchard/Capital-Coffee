@@ -19,10 +19,14 @@ namespace CapitalCoffee.Controllers
             //var vm = new IndexViewModel();
             var shopDao = new ShopDao(db);
             var shopList = shopDao.GetAll(searchTerm, page);
-            //foreach(var shop in shopList)
-            //{
-               
-            //}
+            foreach (var shop in shopList)
+            {
+                shop.AverageRating = shopDao.GetAverageRating(shop.ShopId);
+                if(shop.AverageRating == null)
+                {
+                    shop.AverageRating = 0;
+                }
+            }
 
             //vm.Shops = shopList;
             return View(shopList);

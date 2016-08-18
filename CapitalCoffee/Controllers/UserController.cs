@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using CapitalCoffee.Data.Models;
 using CapitalCoffee.Models;
 using CapitalCoffee.Data.Access;
+using System.Web.Security;
 
 namespace CapitalCoffee.Controllers
 {
@@ -57,7 +58,8 @@ namespace CapitalCoffee.Controllers
                     ViewBag.Error = "Invalid Username or Password";
                     return View("Login", "User", null);
                 }
-
+                Session["uname"] = login.EmailOrUsername;
+                Session.Timeout = 90;
                 return RedirectToAction("Index", "Home", null); 
         }
 

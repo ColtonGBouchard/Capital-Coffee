@@ -1,39 +1,45 @@
-﻿using System;
+﻿using CapitalCoffee.Data.Models;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace CapitalCoffee.Data.Models
+namespace CapitalCoffee.Models
 {
-    public class Shop
+    public class ShopCreateViewModel
     {
-        [Key]
         public int ShopId { get; set; }
         public string Name { get; set; }
 
+        [DisplayName("Address 1")]
         public string Address1 { get; set; }
+
+        [DisplayName("Address 2")]
         public string Address2 { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Zip { get; set; }
 
+        [DisplayName("Website URL")]
         public string WebsiteUrl { get; set; }
+
+        [DisplayName("Menu URL")]
         public string MenuUrl { get; set; }
+
+        [DisplayName("Facebook URL")]
         public string FacebookUrl { get; set; }
+
+        [DisplayName("Twitter URL")]
         public string TwitterUrl { get; set; }
+
+        [DisplayName("Instagram URL")]
         public string InstagramUrl { get; set; }
-        
+
+        [DisplayName("Check if this is a local shop:")]
         public bool IsLocal { get; set; }
-        public bool IsActive { get; set; }
 
-        public List<int> HoursIds { get; set; }
         public List<HoursOfOperation> HoursOfOperation { get; set; }
-
-        public List<int> ReviewIds { get; set; }
-        public List<Review> Reviews { get; set; }
-
-        public double ? AverageRating { get; set; }
+     
     }
 }

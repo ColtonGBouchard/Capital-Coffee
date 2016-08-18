@@ -43,12 +43,12 @@
 </div> 
 
 <div id="infoContainer">
-    <div id="avgRating" class="pull-left">
+    <div id="avgRating" class="pull-left col-lg-2">
         <h3>@Model.AverageRating / 5.0</h3>
-        <h4>Out of @Model.Reviews.Count() ratings</h4>
+        <h4>Based on @Model.Reviews.Count() ratings</h4>
     </div>
 
-    <div id="shopInfoTable" class="pull-right">
+    <div id="shopInfoTable" class="pull-right col-lg-8">
         
         <div id="basicInfo">
             @if (@Model.SelectedShop.Address2 != null)
@@ -99,6 +99,7 @@
         </div>
 
         <div id="hours">
+          
             <table id="hoursTable">
                 <tr>
                     <th>Day</th>
@@ -107,6 +108,10 @@
                 </tr>
                 @foreach (var h in @Model.HoursOfOperation)
                 {
+                    if(h == null)
+                    {
+                        <h1>TEST</h1>
+                    }
                     <tr>
                         <td>@h.DayOfWeek</td>
                         <td>@h.OpenTime.ToString(@"hh\:mm")</td>
@@ -114,12 +119,29 @@
                     </tr>
                 }
             </table>
+            
         </div>
     </div>
+
+
 </div>
 
-
 <div id="reviewsContainer">
+    <div id="reviewListHeader"></div>
+    @if (Model.Reviews.First() != null)
+    {
+        foreach (var r in Model.Reviews)
+        {
+            <div id="singleReview">
+                <div id="userInfo" class="col-md-6">
+                    <h4>@r.UserId</h4>
+                </div>
 
-
+                <div id="reviewInfo" class="col-md-6">
+                    <h4>@r.Rating</h4>
+                    <h4>@r.ReviewText</h4>
+                </div>
+            </div>
+        }
+    }
 </div>

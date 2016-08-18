@@ -28,8 +28,11 @@ namespace CapitalCoffee.Data.Access
             var shopList = context.Shops.Where(s => s.Name.Contains(searchTerm)).OrderBy(s => s.Name).ToPagedList(page, 5);
             return shopList;
         }
-        public void Add(Shop shop)
+
+        public void Create(Shop shop)
         {
+            shop.IsActive = true;
+            
             context.Shops.Add(shop);
             context.SaveChanges();
         }

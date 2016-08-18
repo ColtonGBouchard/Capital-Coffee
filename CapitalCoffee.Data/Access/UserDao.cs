@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+
 
 namespace CapitalCoffee.Data.Access
 {
@@ -14,6 +16,12 @@ namespace CapitalCoffee.Data.Access
         public UserDao(CapitalCoffeeContext context)
         {
             this.context = context;
+        }
+
+        public User GetByEmailOrUser(string input)
+        {
+            User user = context.Users.Where(u => u.Username == input || u.EmailAddress == input).FirstOrDefault();
+            return user;
         }
 
         public void RegisterAccount(User user, string password)
@@ -35,31 +43,20 @@ namespace CapitalCoffee.Data.Access
         {
             HashComputer hashComputer = new HashComputer();
             PasswordManager pm = new PasswordManager();
-            User user = context.Users.Where(u => u.Username == input).FirstOrDefault();
+            User user = context.Users.Where(u => u.Username == input || u.EmailAddress == input).FirstOrDefault();
             if (user != null)
             {
                 var hash = user.PasswordHash;
                 var salt = user.Salt;
-                //string finalString = password + salt;
-                //var hashedPassword = hashComputer.GetPasswordHashAndSalt(finalString);
-                var hashedPassword = pm.GeneratePasswordHash(password, salt);
-                var result = new bool();
-                if (hash == hashedPassword)
-                {
-                    result = true;
-                }
-                else
-                {
-                    result = false;
-                }
-
-                return result;
+                var hashedPassword = pm.GeneratePasswordHash(password, salt);               
+                return hash==hashedPassword;
             }
 
             return false;
-            //bool loginResult = pm.IsPasswordMatch(password, salt, hash);
-            //return loginResult;
+     
         }
 
+
+       
     }
 }

@@ -54,14 +54,9 @@ namespace CapitalCoffee.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ShopId,Name,Address1,Address2,City,State,Zip,WebsiteUrl,MenuUrl,FacebookUrl,TwitterUrl,InstagramUrl,IsLocal,IsActive")] Shop shop)
+        public ActionResult Create(ShopCreateViewModel shop)
         {
-            if (ModelState.IsValid)
-            {
-                db.Shops.Add(shop);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            
 
             return View(shop);
         }

@@ -12,6 +12,7 @@ namespace CapitalCoffee.Data.Models
     {
         [Key]
         public int ReviewId { get; set; }
+        public string ReviewText { get; set; }
 
         public int UserId { get; set; }
         public User Reviewer { get; set; }
@@ -23,7 +24,7 @@ namespace CapitalCoffee.Data.Models
         public int Rating { get; set; }
 
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime ? UpdatedAt { get; set; }
 
         public List<ReviewPicture> ReviewPictures { get; set; }
     }
