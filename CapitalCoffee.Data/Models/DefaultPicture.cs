@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CapitalCoffee.Data.Models
 {
-    public class ReviewPicture
+    class DefaultPicture
     {
-        [Key]
-        public int ReviewPictureId { get; set; }
-        public int ReviewId { get; set; }
+        public int ShopId { get; set; }
         public byte[] Picture { get; set; }
         public string MimeType { get; set; }
-        public Review Review { get; set; }
+        public Shop Shop { get; set; }
     }
 }

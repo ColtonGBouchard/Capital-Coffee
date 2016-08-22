@@ -25,7 +25,7 @@
         </div>
 
         <div id="shopLocationSection">
-            <h3>Shop Location</h3>
+            <h4>Shop Location</h4>
             <div class="form-group">
                 @Html.LabelFor(model => model.Address1, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -120,24 +120,39 @@
 
         <div id="shopHoursSection">
             <div class="form-group">
-                <div class="col-md-4">Sunday</div>
+                <div class="col-md-1">Sunday</div>
                 @Html.LabelFor(model => model.HoursOfOperation[0].OpenTime, new { @class = "control-label col-md-2 date" })
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.EditorFor(model => model.HoursOfOperation[0].OpenTime)
                     @Html.ValidationMessageFor(model => model.HoursOfOperation[0].OpenTime)
                 </div>
 
                 @Html.LabelFor(model => model.HoursOfOperation[0].CloseTime, new { @class = "control-label col-md-2 date" })
-                <div class="col-md-4">
+                <div class="col-md-2">
                     @Html.EditorFor(model => model.HoursOfOperation[0].CloseTime)
                     @Html.ValidationMessageFor(model => model.HoursOfOperation[0].CloseTime)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-1">Monday</div>
+                @Html.LabelFor(model => model.HoursOfOperation[1].OpenTime, new { @class = "control-label col-md-2 date" })
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.HoursOfOperation[1].OpenTime)
+                    @Html.ValidationMessageFor(model => model.HoursOfOperation[1].OpenTime)
+                </div>
+
+                @Html.LabelFor(model => model.HoursOfOperation[1].CloseTime, new { @class = "control-label col-md-2 date" })
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.HoursOfOperation[1].CloseTime)
+                    @Html.ValidationMessageFor(model => model.HoursOfOperation[1].CloseTime)
                 </div>
             </div>
         </div>
        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default"/>
             </div>
         </div>
     </div>
@@ -152,6 +167,7 @@
 }
 
 <script type="text/javascript">
-    $('.date').datetimepicker();
-
+    $(document).ready(function () {
+        $("#shopLocationSection").timepicker();
+    });
 </script>

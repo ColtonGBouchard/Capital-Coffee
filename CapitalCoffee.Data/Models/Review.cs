@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace CapitalCoffee.Data.Models
     {
         [Key]
         public int ReviewId { get; set; }
+
+        [DisplayName("Review")]
         public string ReviewText { get; set; }
 
         public int UserId { get; set; }
-        public User Reviewer { get; set; }
+        public User User { get; set; }
 
         public int ShopId { get; set; }
         public Shop Shop { get; set; }

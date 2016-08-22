@@ -99,7 +99,7 @@ th, td {
     margin-top: 10px;
 }
 
-#shopListHeader, #reviewListHeader{
+#shopListHeader{
     background-color: lightgray;
     height: 50px;
     border-radius: 10px;
@@ -124,4 +124,8 @@ th, td {
     border: 1px solid gray;
     margin: 5px;
     border-radius: 10px;
+}
+
+#shopPagedList{
+    justify-content: center;
 }

@@ -58,11 +58,14 @@
   <ItemGroup>
     <Compile Include="Access\HashComputer.cs" />
     <Compile Include="Access\PasswordManager.cs" />
+    <Compile Include="Access\PhotoDao.cs" />
+    <Compile Include="Access\ReviewDao.cs" />
     <Compile Include="Access\SaltGenerator.cs" />
     <Compile Include="Access\ShopDao.cs" />
     <Compile Include="Access\UserDao.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CapitalCoffeeContext.cs" />
+    <Compile Include="Models\DefaultPicture.cs" />
     <Compile Include="Models\HoursOfOperation.cs" />
     <Compile Include="Models\ProfilePicture.cs" />
     <Compile Include="Models\Review.cs" />

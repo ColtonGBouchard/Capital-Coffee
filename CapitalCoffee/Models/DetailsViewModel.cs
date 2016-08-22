@@ -1,6 +1,7 @@
 ﻿using CapitalCoffee.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -25,6 +26,6 @@ namespace CapitalCoffee.Models
         public List<Review> Reviews { get; set; }
         public List<ReviewPicture> ReviewPictures { get; set; }
         public List<HoursOfOperation> HoursOfOperation { get; set; }
-
+        public bool UserHasReviewedShop { get; set; }
     }
 }

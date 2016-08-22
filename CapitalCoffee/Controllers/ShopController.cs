@@ -27,19 +27,28 @@ namespace CapitalCoffee.Controllers
         {
             DetailsViewModel model = new DetailsViewModel();
             var shopDao = new ShopDao(db);
+            var userDao = new UserDao(db);
+            bool hasReviewed = new bool();
+            var userName = (string)(Session["userName"]);
+            var user = userDao.GetByEmailOrUser(userName);
 
-            var shop = shopDao.GetById(id);
-            var reviews = shopDao.GetReviews(id);
-            var pictures = shopDao.GetReviewPictures(id);
-            var averageRating = shopDao.GetAverageRating(id);
-            var hoursOfOperation = shopDao.GetHoursOfOperation(id);
+            //if (user == null)
+            //{
+            //    hasReviewed = false;
+            //}
+            //else
+            if(user != null)
+            {
+                model.UserHasReviewedShop = shopDao.UserHasReviewedShop(id, user.UserId);
+            }
 
-            model.SelectedShop = shop;
-            model.Reviews = reviews;
-            model.ReviewPictures = pictures;
-            model.AverageRating = averageRating;
-            model.HoursOfOperation = hoursOfOperation;
+            model.SelectedShop = shopDao.GetById(id);
+            model.Reviews = shopDao.GetReviews(id);
+            model.ReviewPictures = shopDao.GetReviewPictures(id);
+            model.AverageRating = shopDao.GetAverageRating(id);
+            model.HoursOfOperation = shopDao.GetHoursOfOperation(id);
 
+            
             return View(model);
         }
 
@@ -54,7 +63,7 @@ namespace CapitalCoffee.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ShopCreateViewModel shop)
+        public ActionResult Create(ShopCreateViewModel shop, HttpPostedFileBase ShopPicture)
         {
             
 

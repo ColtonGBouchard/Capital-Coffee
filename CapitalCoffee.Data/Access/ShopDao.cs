@@ -56,6 +56,7 @@ namespace CapitalCoffee.Data.Access
         public List<ReviewPicture> GetReviewPictures(int id)
         {
             return context.ReviewPictures.Where(p => p.Review.Shop.ShopId == id).ToList();
+           
         }
 
         public int GetAverageRating(int id)
@@ -85,6 +86,19 @@ namespace CapitalCoffee.Data.Access
             return context.HoursOfOperation.OrderBy(r=>r.DayOfWeek).Where(h => h.ShopId == id).ToList();
         }
 
+        public bool UserHasReviewedShop(int shopId, int userId)
+        {
+            var reviews = context.Reviews.Where(r => r.ShopId == shopId && r.UserId == userId).ToList();
+            if (reviews.Count() == 0)
+                return false;
+            else
+                return true;
+        }
+
+        public ReviewPicture GetSelectedPicture(int id)
+        {
+            return context.ReviewPictures.Find(id);
+        }
 
     }
 }

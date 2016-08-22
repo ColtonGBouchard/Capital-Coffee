@@ -58,9 +58,18 @@ namespace CapitalCoffee.Controllers
                     ViewBag.Error = "Invalid Username or Password";
                     return View("Login", "User", null);
                 }
-                Session["uname"] = login.EmailOrUsername;
+
+                var user = userDao.GetByEmailOrUser(login.EmailOrUsername);
+                Session["userName"] = user.Username;
                 Session.Timeout = 90;
                 return RedirectToAction("Index", "Home", null); 
+        }
+
+
+        public ActionResult LogOff()
+        {
+            Session.Remove("userName");
+            return RedirectToAction("Index", "Home", null);
         }
 
 
@@ -156,5 +165,12 @@ namespace CapitalCoffee.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+        //[HttpGet]
+        //public ActionResult Profile(int id)
+        //{
+
+        //}
     }
 }
