@@ -6,156 +6,310 @@
 
 <h2>Create</h2>
 
+@{
+    List<SelectListItem> minutes = new List<SelectListItem>();
+    List<SelectListItem> amOrPm = new List<SelectListItem>();
+    minutes.Add(new SelectListItem
+        {
+            Text = "00",
+            Value = "00"
+        });
 
-@using (Html.BeginForm()) 
+    minutes.Add(new SelectListItem
+    {
+        Text = "15",
+        Value = "15"
+    });
+
+    minutes.Add(new SelectListItem
+    {
+        Text = "30",
+        Value = "30"
+    });
+
+    minutes.Add(new SelectListItem
+    {
+        Text = "45",
+        Value = "45"
+    });
+
+    amOrPm.Add(new SelectListItem
+        {
+            Text = "AM",
+            Value = "AM"
+        });
+
+    amOrPm.Add(new SelectListItem
+    {
+        Text = "PM",
+        Value = "PM"
+    });
+
+}
+
+
+@using (Html.BeginForm("Create", "Shop", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h3>Shop</h3>
+        <h4>Shop</h4>
         <hr />
         @Html.ValidationSummary(true)
 
+
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Shop.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
+                @Html.EditorFor(model => model.Shop.Name)
+                @Html.ValidationMessageFor(model => model.Shop.Name)
+                <h5><b>Add default photo for shop:</b></h5>
+                <div class="form-group">
+                    @Html.HiddenFor(model => model.DefaultShopPicture, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input name="ShopPicture" type="file" accept="image/gif, image/jpeg, image/png" multiple />
+                        @Html.ValidationMessageFor(model => model.DefaultShopPicture)
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="shopLocationSection">
+
+        <div id="shopLocation">
             <h4>Shop Location</h4>
             <div class="form-group">
-                @Html.LabelFor(model => model.Address1, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.Address1, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Address1)
-                    @Html.ValidationMessageFor(model => model.Address1)
+                    @Html.EditorFor(model => model.Shop.Address1)
+                    @Html.ValidationMessageFor(model => model.Shop.Address1)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Address2, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.Address2, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Address2)
-                    @Html.ValidationMessageFor(model => model.Address2)
+                    @Html.EditorFor(model => model.Shop.Address2)
+                    @Html.ValidationMessageFor(model => model.Shop.Address2)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.City, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.City, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.City)
-                    @Html.ValidationMessageFor(model => model.City)
+                    @Html.EditorFor(model => model.Shop.City)
+                    @Html.ValidationMessageFor(model => model.Shop.City)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.State, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.State, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.State)
-                    @Html.ValidationMessageFor(model => model.State)
+                    @Html.EditorFor(model => model.Shop.State)
+                    @Html.ValidationMessageFor(model => model.Shop.State)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Zip, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.Zip, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Zip)
-                    @Html.ValidationMessageFor(model => model.Zip)
+                    @Html.EditorFor(model => model.Shop.Zip)
+                    @Html.ValidationMessageFor(model => model.Shop.Zip)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.IsLocal, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.IsLocal, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.IsLocal)
-                    @Html.ValidationMessageFor(model => model.IsLocal)
+                    @Html.EditorFor(model => model.Shop.IsLocal)
+                    @Html.ValidationMessageFor(model => model.Shop.IsLocal)
                 </div>
             </div>
         </div>
 
-        <div id="shopUrlSection">
-            <h4>Shop Websites and Social Media</h4>
+        <div id="shopUrls">
+            <h4>Shop Links</h4>
             <div class="form-group">
-                @Html.LabelFor(model => model.WebsiteUrl, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.WebsiteUrl, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.WebsiteUrl)
-                    @Html.ValidationMessageFor(model => model.WebsiteUrl)
+                    @Html.EditorFor(model => model.Shop.WebsiteUrl)
+                    @Html.ValidationMessageFor(model => model.Shop.WebsiteUrl)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.MenuUrl, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.MenuUrl, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.MenuUrl)
-                    @Html.ValidationMessageFor(model => model.MenuUrl)
+                    @Html.EditorFor(model => model.Shop.MenuUrl)
+                    @Html.ValidationMessageFor(model => model.Shop.MenuUrl)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.FacebookUrl, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.FacebookUrl, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.FacebookUrl)
-                    @Html.ValidationMessageFor(model => model.FacebookUrl)
+                    @Html.EditorFor(model => model.Shop.FacebookUrl)
+                    @Html.ValidationMessageFor(model => model.Shop.FacebookUrl)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.TwitterUrl, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.TwitterUrl, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.TwitterUrl)
-                    @Html.ValidationMessageFor(model => model.TwitterUrl)
+                    @Html.EditorFor(model => model.Shop.TwitterUrl)
+                    @Html.ValidationMessageFor(model => model.Shop.TwitterUrl)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.InstagramUrl, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Shop.InstagramUrl, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.InstagramUrl)
-                    @Html.ValidationMessageFor(model => model.InstagramUrl)
+                    @Html.EditorFor(model => model.Shop.InstagramUrl)
+                    @Html.ValidationMessageFor(model => model.Shop.InstagramUrl)
                 </div>
             </div>
         </div>
 
-        <div id="shopHoursSection">
-            <div class="form-group">
-                <div class="col-md-1">Sunday</div>
-                @Html.LabelFor(model => model.HoursOfOperation[0].OpenTime, new { @class = "control-label col-md-2 date" })
-                <div class="col-md-2">
-                    @Html.EditorFor(model => model.HoursOfOperation[0].OpenTime)
-                    @Html.ValidationMessageFor(model => model.HoursOfOperation[0].OpenTime)
-                </div>
 
-                @Html.LabelFor(model => model.HoursOfOperation[0].CloseTime, new { @class = "control-label col-md-2 date" })
-                <div class="col-md-2">
-                    @Html.EditorFor(model => model.HoursOfOperation[0].CloseTime)
-                    @Html.ValidationMessageFor(model => model.HoursOfOperation[0].CloseTime)
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-1">Monday</div>
-                @Html.LabelFor(model => model.HoursOfOperation[1].OpenTime, new { @class = "control-label col-md-2 date" })
-                <div class="col-md-2">
-                    @Html.EditorFor(model => model.HoursOfOperation[1].OpenTime)
-                    @Html.ValidationMessageFor(model => model.HoursOfOperation[1].OpenTime)
-                </div>
-
-                @Html.LabelFor(model => model.HoursOfOperation[1].CloseTime, new { @class = "control-label col-md-2 date" })
-                <div class="col-md-2">
-                    @Html.EditorFor(model => model.HoursOfOperation[1].CloseTime)
-                    @Html.ValidationMessageFor(model => model.HoursOfOperation[1].CloseTime)
-                </div>
-            </div>
-        </div>
-       
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default"/>
+            @Html.HiddenFor(model => model.Shop.IsActive, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.Shop.IsActive)
+                @Html.ValidationMessageFor(model => model.Shop.IsActive)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.HiddenFor(model => model.Shop.AverageRating, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.Shop.AverageRating)
+                @Html.ValidationMessageFor(model => model.Shop.AverageRating)
+            </div>
+        </div>
+
+        <div>Sunday</div>
+        <div class="col-lg-12">
+            @Html.LabelFor(model => model.Shop.HoursOfOperation[0].OpenTimeHour, new { @class = "control-label col-md-2 date" })
+            @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+            @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].OpenTimeMinute, minutes, "-- Minute --")
+            @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].OpenAmOrPm, amOrPm, "-- AM or PM --")
+
+        </div>
+
+        <div class="col-lg-12">
+            @Html.LabelFor(model => model.Shop.HoursOfOperation[0].CloseTimeHour, new { @class = "control-label col-md-2 date" })
+            @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+            @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].CloseTimeMinute, minutes, "-- Minute --")
+            @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].CloseAmOrPm, amOrPm, "-- AM or PM --")
+        </div>
+        <div>
+            <div>Monday</div>
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[1].OpenTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].OpenTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].OpenAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[1].CloseTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].CloseTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].CloseAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+        </div>
+
+        <div>
+            <div>Tuesday</div>
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[2].OpenTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].OpenTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].OpenAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[2].CloseTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].CloseTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].CloseAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+        </div>
+
+        <div>
+            <div>Wednesday</div>
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[3].OpenTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].OpenTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].OpenAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[3].CloseTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].CloseTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].CloseAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+        </div>
+
+        <div>
+            <div>Thursday</div>
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[4].OpenTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].OpenTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].OpenAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[4].CloseTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].CloseTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].CloseAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+        </div>
+
+        <div>
+            <div>Friday</div>
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[5].OpenTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].OpenTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].OpenAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[5].CloseTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].CloseTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].CloseAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+        </div>
+
+        <div>
+            <div>Saturday</div>
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[6].OpenTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].OpenTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].OpenAmOrPm, amOrPm, "-- AM or PM --")
+            </div>
+
+            <div class="col-lg-12">
+                @Html.LabelFor(model => model.Shop.HoursOfOperation[6].CloseTimeHour, new { @class = "control-label col-md-2 date" })
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].CloseTimeMinute, minutes, "-- Minute --")
+                @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].CloseAmOrPm, amOrPm, "-- AM or PM --")
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+
 }
 
 <div>
@@ -165,9 +319,3 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#shopLocationSection").timepicker();
-    });
-</script>

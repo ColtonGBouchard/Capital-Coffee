@@ -10,6 +10,7 @@ namespace CapitalCoffee.Models
     public class ShopCreateViewModel
     {
         public int ShopId { get; set; }
+        public int DefaultShopPictureId { get; set; }
         public string Name { get; set; }
 
         [DisplayName("Address 1")]
@@ -40,6 +41,8 @@ namespace CapitalCoffee.Models
         public bool IsLocal { get; set; }
 
         public List<HoursOfOperation> HoursOfOperation { get; set; }
+        public Shop Shop { get; set; }
+        public DefaultShopPicture DefaultShopPicture { get; set; }
      
     }
 }

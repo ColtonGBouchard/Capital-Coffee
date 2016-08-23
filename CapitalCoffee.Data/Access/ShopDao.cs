@@ -37,10 +37,12 @@ namespace CapitalCoffee.Data.Access
             context.SaveChanges();
         }
 
-        //public void Delete(Shop shop)
-        //{
-        
-        //}
+        public void Delete(int shopId)
+        {
+            Shop shop = context.Shops.Find(shopId);
+            context.Shops.Remove(shop);
+            context.SaveChanges();
+        }
 
         public void Edit(Shop shop)
         {

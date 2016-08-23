@@ -3,6 +3,7 @@
     ViewBag.Title = "Add";
 }
 
+
 <h2>Add</h2>
 
 
@@ -13,6 +14,12 @@
     <div class="form-horizontal">
         <h4>AddReviewViewModel</h4>
         <hr />
+
+        @if (TempData["notice"] != null)
+        {
+            @Html.Encode(TempData["notice"])
+        }
+
         @Html.ValidationSummary(true)
 
         <div class="form-group">

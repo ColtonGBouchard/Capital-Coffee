@@ -166,11 +166,13 @@ namespace CapitalCoffee.Controllers
             base.Dispose(disposing);
         }
 
-
         //[HttpGet]
         //public ActionResult Profile(int id)
         //{
-
+        //    var userDao = new UserDao(db);
+                
         //}
+
+
     }
 }

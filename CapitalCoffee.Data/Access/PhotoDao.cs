@@ -1,10 +1,6 @@
 ﻿using CapitalCoffee.Data.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
+
 namespace CapitalCoffee.Data.Access
 {
     public class PhotoDao
@@ -27,9 +23,15 @@ namespace CapitalCoffee.Data.Access
             context.SaveChanges();
         }
 
-        public void UploadDefaultPicture()
+        public void UploadDefaultPicture(DefaultShopPicture shopPicture)
         {
+            context.DefaultShopPictures.Add(shopPicture);
+            context.SaveChanges();
+        }
 
+        public DefaultShopPicture GetDefaultPicture(int shopId)
+        {
+            return context.DefaultShopPictures.Where(p => p.ShopId == shopId).FirstOrDefault();
         }
 
         public ReviewPicture GetBinaryData(int id)

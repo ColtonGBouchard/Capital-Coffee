@@ -23,6 +23,13 @@ namespace CapitalCoffee.Controllers
             return File(picture.Picture, picture.MimeType);
         }
 
+        public ActionResult ShowDefaultPicture(int id)
+        {
+            var photoDao = new PhotoDao(db);
+            var picture = photoDao.GetDefaultPicture(id);
+
+            return File(picture.Picture, picture.MimeType);
+        }
 
         public ActionResult ShowSelectedPicture(int id)
         {

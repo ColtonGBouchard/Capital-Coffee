@@ -23,11 +23,14 @@ namespace CapitalCoffee.Controllers
             var userName = (string)(Session["userName"]);
             var userDao = new UserDao(db);
             var user = userDao.GetByEmailOrUser(userName);
-
-            var vm = new AddReviewViewModel();
-            vm.ShopId = shopId;
-            vm.UserId= user.UserId;
-            return View(vm);
+            if (user != null)
+            {
+                var vm = new AddReviewViewModel();
+                vm.ShopId = shopId;
+                vm.UserId = user.UserId;
+                return View(vm);
+            }
+            return RedirectToAction("Login", "User");            
         }
 
         
@@ -50,18 +53,33 @@ namespace CapitalCoffee.Controllers
                 {
                     foreach (var p in ReviewPictures)
                     {
-                        var image = new ReviewPicture()
+                        if (p.ContentLength <= 5000000 && (p.ContentType == "image/gif" || p.ContentType == "image/jpeg" || p.ContentType == "image/png"))
                         {
-                            ReviewId = review.Review.ReviewId,
-                            MimeType = p.ContentType,
-                            Picture = new byte[p.ContentLength]
-                        };
+                            var image = new ReviewPicture()
+                            {
+                                ReviewId = review.Review.ReviewId,
+                                MimeType = p.ContentType,
+                                Picture = new byte[p.ContentLength]
+                            };
 
-                        p.InputStream.Read(image.Picture, 0, p.ContentLength);
+                            p.InputStream.Read(image.Picture, 0, p.ContentLength);
 
-                        photoDao.UploadReviewPicture(image);
+                            photoDao.UploadReviewPicture(image);
+                        }
+                        else
+                        {
+                            TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
+                            reviewDao.Delete(review.Review.ReviewId);
+                            return View(review);
+                        }
                     }
                     return RedirectToAction("Details", "Shop", new { id = review.ShopId });
+                }
+                else
+                {
+                    TempData["notice"] = "Too many pictures. Please include 5 pictures or less";
+                    reviewDao.Delete(review.Review.ReviewId);
+                    return View(review);
                 }
             }
 

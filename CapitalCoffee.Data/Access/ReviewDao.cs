@@ -44,5 +44,12 @@ namespace CapitalCoffee.Data.Access
             return context.Reviews.Where(r => r.UserId == userId).FirstOrDefault();
         }
 
+        public void Delete(int reviewId)
+        {
+            var review = context.Reviews.Where(r => r.ReviewId == reviewId).FirstOrDefault();
+            context.Reviews.Remove(review);
+            context.SaveChanges();
+        }
+
     }
 }

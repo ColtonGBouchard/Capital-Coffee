@@ -8,11 +8,21 @@
 
 <div id="shopCarousel" class="carousel slide" data-ride="carousel">
 
-    @if(@Model.ReviewPictures.Count() < 1)
+    @if(@Model.ReviewPictures.Count() < 1 && Model.DefaultPicture == null)
     {
         <div class="carousel-inner" role="listbox">
             <div class="item active">
                 <img src="https://biz.ttrumpet.com/images/no-image-selected-ttrumpet.png" alt="First" />
+            </div>  
+        </div>
+    }
+    else if(@Model.ReviewPictures.Count() < 1 && Model.DefaultPicture != null)
+    {
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                @*<img src="https://s3-media2.fl.yelpcdn.com/bphoto/gCJxTUpIK6PBWTT8LIcQhA/ls.jpg" alt="First" />*@
+                <img src='@Url.Action( "ShowDefaultPicture", "Photo", new { id = @Model.SelectedShop.ShopId} )' />
+
             </div>  
         </div>
     }
@@ -123,15 +133,14 @@
                 </tr>
                 @foreach (var h in @Model.HoursOfOperation)
                 {
-                    if(h == null)
-                    {
-                        <h1>TEST</h1>
+                    if (h != null) 
+                    { 
+                        <tr>
+                            <td>@h.DayOfWeek</td>
+                            <td>@h.OpenTimeHour.ToString():@h.OpenTimeMinute.ToString() @h.OpenAmOrPm</td>
+                            <td>@h.CloseTimeHour.ToString():@h.CloseTimeMinute.ToString() @h.CloseAmOrPm</td>
+                        </tr>
                     }
-                    <tr>
-                        <td>@h.DayOfWeek</td>
-                        <td>@h.OpenTime.ToString(@"hh\:mm")</td>
-                        <td>@h.CloseTime.ToString(@"hh\:mm")</td>
-                    </tr>
                 }
             </table>
             
