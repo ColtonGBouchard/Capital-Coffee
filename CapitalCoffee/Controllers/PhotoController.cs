@@ -38,5 +38,12 @@ namespace CapitalCoffee.Controllers
             return File(picture.Picture, picture.MimeType);
         }
 
+        public ActionResult ShowProfilePicture(int id)
+        {
+            var photoDao = new PhotoDao(db);
+            var picture = photoDao.GetPictureForUser(id);
+            return File(picture.Picture, picture.MimeType);
+        }
+
 	}
 }

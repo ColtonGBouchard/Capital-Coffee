@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Data.Entity;
 
 
 namespace CapitalCoffee.Data.Access
@@ -53,9 +54,21 @@ namespace CapitalCoffee.Data.Access
             }
 
             return false;
-     
         }
 
+        public User GetById(int id)
+        {
+            return context.Users.Where(u => u.UserId == id).FirstOrDefault();
+        }
+
+        public void Edit(int id)
+        {
+            var user = context.Users.Find(id);
+            if (context.Entry(user).State == EntityState.Modified)
+            {
+                context.SaveChanges();
+            }
+        }
 
        
     }

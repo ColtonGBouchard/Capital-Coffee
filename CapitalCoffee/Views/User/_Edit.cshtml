@@ -7,13 +7,13 @@
 
 
 @*@if (Model.ProfilePicture == null)
-{
-    <img src="https://biz.ttrumpet.com/images/no-image-selected-ttrumpet.png" alt="First" height="200" width="200" />
-}
-else
-{
-    <img src='@Url.Action("ShowProfilePicture", "Photo", new { id = @Model.User.UserId })' height="200" width="200" />
-}*@
+    {
+        <img src="https://biz.ttrumpet.com/images/no-image-selected-ttrumpet.png" alt="First" height="200" width="200" />
+    }
+    else
+    {
+        <img src='@Url.Action("ShowProfilePicture", "Photo", new { id = @Model.User.UserId })' height="200" width="200" />
+    }*@
 
 
 @using (Html.BeginForm("Edit", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -102,3 +102,21 @@ else
     @Scripts.Render("~/bundles/jqueryval")
 }
 
+<script type="text/javascript">
+    $(function () {
+        $('.details').click(function () {
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+
+            $.ajax({
+                url: '@Url.Action("Details")',
+                type: 'GET',
+                data: { id: id },
+                success: function (partialView) {
+                    $('#detailsPlace').html(partialView);
+                    $('#detailsPlace').show();
+                }
+            });
+        });
+    });
+</script>

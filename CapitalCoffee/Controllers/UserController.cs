@@ -61,6 +61,7 @@ namespace CapitalCoffee.Controllers
 
                 var user = userDao.GetByEmailOrUser(login.EmailOrUsername);
                 Session["userName"] = user.Username;
+
                 Session.Timeout = 90;
                 return RedirectToAction("Index", "Home", null); 
         }
@@ -73,65 +74,79 @@ namespace CapitalCoffee.Controllers
         }
 
 
-        // GET: /User/
-        public ActionResult Index()
+     
+        [HttpGet]
+        public PartialViewResult Edit(int id)
         {
-            var users = db.Users.Include(u => u.Role);
-            return View(users.ToList());
+            
+            var userDao = new UserDao(db);
+            var photoDao = new PhotoDao(db);
+            var reviewDao = new ReviewDao(db);
+            var vm = new ProfilePageViewModel();
+
+            var user = userDao.GetById(id);
+            var reviews = reviewDao.GetAllReviewsByUser(id);
+            
+            vm.User = user;
+            vm.UserId = user.UserId;
+
+            if (reviews != null)
+            {
+                vm.Reviews = reviews;
+            }
+             
+            //if (picture != null)
+            //{
+            //    vm.ProfilePicture = picture;
+            //    vm.ProfilePictureId = picture.ProfilePictureId;
+            //}
+
+            return PartialView("~/Views/User/_Edit.cshtml", vm);
         }
 
-        // GET: /User/Details/5
-        public ActionResult Details(int? id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(ProfilePageViewModel vm, HttpPostedFileBase photo)
         {
-            if (id == null)
+            if (ModelState.IsValid)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                var userDao = new UserDao(db);
+                var photoDao = new PhotoDao(db);
+                var user = vm.User;
+                userDao.Edit(user.UserId);
+
+                if(photo != null)
+                {
+                    photoDao.DeleteProfilePicture(vm.User.UserId);
+                    if (photo.ContentLength <= 5000000 && (photo.ContentType == "image/gif" || photo.ContentType == "image/jpeg" || photo.ContentType == "image/png"))
+                    {
+                        var image = new ProfilePicture()
+                        {
+                            UserId = vm.User.UserId,
+                            MimeType = photo.ContentType,
+                            Picture = new byte[photo.ContentLength]
+                        };
+
+                        photo.InputStream.Read(image.Picture, 0, photo.ContentLength);
+
+                        photoDao.UploadProfilePicture(image);
+                    }
+                    else
+                    {
+                        TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
+                        return View(vm);
+                    }
+                }
+
+                db.SaveChanges();
+                return RedirectToAction("Profile", "User", new { id = vm.User.UserId });
             }
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
+
+            return View(vm);
         }
 
-
-
- 
-        //// GET: /User/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    User user = db.Users.Find(id);
-        //    if (user == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.RoleId = new SelectList(db.Roles, "RoleId", "RoleName", user.RoleId);
-        //    return View(user);
-        //}
-
-        // POST: /User/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include="UserId,Username,EmailAddress,PasswordHash,Salt,Tagline,RoleId")] User user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(user).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.RoleId = new SelectList(db.Roles, "RoleId", "RoleName", user.RoleId);
-        //    return View(user);
-        //}
-
-        // GET: /User/Delete/5
+        [HttpGet]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -166,12 +181,31 @@ namespace CapitalCoffee.Controllers
             base.Dispose(disposing);
         }
 
-        //[HttpGet]
-        //public ActionResult Profile(int id)
-        //{
-        //    var userDao = new UserDao(db);
-                
-        //}
+        [HttpGet]
+        public ActionResult Profile(int id)
+        {
+            var userDao = new UserDao(db);
+            var photoDao = new PhotoDao(db);
+            var reviewDao = new ReviewDao(db);
+            var vm = new ProfilePageViewModel();
+
+            var user = userDao.GetById(id);
+            vm.User = user;
+
+            var profilePicture = photoDao.GetPictureForUser(user.UserId);
+            if(profilePicture != null)
+            {
+              vm.ProfilePicture = profilePicture;
+            }
+
+            var reviews = reviewDao.GetAllReviewsByUser(id);
+            if(reviews.Any())
+            {
+                vm.Reviews = reviews;
+            }
+            
+            return View(vm);
+        }
 
 
     }

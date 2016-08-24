@@ -1,0 +1,72 @@
+﻿@model CapitalCoffee.Models.ProfilePageViewModel
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+<div id="profileContainer">
+    <div id="profilePicture" class="center-block">
+        @if (Model.ProfilePicture == null)
+        {
+            <img src="https://biz.ttrumpet.com/images/no-image-selected-ttrumpet.png" alt="First" height="200" width="200" />
+        }
+        else
+        {
+            <img src='@Url.Action("ShowProfilePicture", "Photo", new { id = @Model.User.UserId })' height="200" width="200" />
+        }
+    </div>
+    @*<a href="#" class="editProfile" data-id="@Model.User.UserId">Edit Profile</a>*@
+    @*<a href="@Url.Action("Edit", new { id=@Model.User.UserId})" data-ajax='true' data-ajax-update='#profile' data-ajax-mode='replace'>*@
+    
+    @Ajax.ActionLink("Edit Profile",
+                 "Edit",
+                 "User",
+                  new { id = @Model.User.UserId },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "GET",
+                     InsertionMode = InsertionMode.Replace,
+                     UpdateTargetId = "profile"
+                 })
+        <div id="profile">
+            <div id="userBasicInfo">
+                <h2>@Model.User.Username</h2>
+                @if (Model.User.Tagline != null)
+                {
+                    <h4>"@Model.User.Tagline"</h4>
+                }
+
+                <h4>@Model.User.EmailAddress</h4>
+            </div>
+
+            <div id="userReviews">
+                @foreach (var r in Model.Reviews)
+                {
+                    <div>
+                        <h5>@r.ShopId</h5>
+                        <h5>@r.Rating</h5>
+                        <h5>@r.ReviewText</h5>
+                    </div>
+                }
+            </div>
+        </div>
+</div>
+
+@*<script type="text/javascript">
+    $(function () {
+        $('.editProfile').click(function () {
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+
+            $.ajax({
+                url: '@Url.Action("Edit")',
+                type: 'GET',
+                data: { id: id },
+                success: function (partialView) {
+                    $('#profile').html(partialView);
+                    $('#profile').show();
+                }
+            });
+        });
+    });
+</script>*@

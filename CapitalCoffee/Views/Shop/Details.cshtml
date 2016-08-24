@@ -131,10 +131,10 @@
                     <th>Open</th>
                     <th>Close</th>
                 </tr>
-                @foreach (var h in @Model.HoursOfOperation)
-                {
-                    if (h != null) 
-                    { 
+                @if(@Model.HoursOfOperation.Any())
+                { 
+                    foreach (var h in @Model.HoursOfOperation)
+                    {
                         <tr>
                             <td>@h.DayOfWeek</td>
                             <td>@h.OpenTimeHour.ToString():@h.OpenTimeMinute.ToString() @h.OpenAmOrPm</td>

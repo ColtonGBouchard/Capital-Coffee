@@ -38,5 +38,26 @@ namespace CapitalCoffee.Data.Access
         {
             return context.ReviewPictures.Find(id);
         }
+
+        public ProfilePicture GetPictureForUser(int id)
+        {
+            return context.ProfilePictures.Where(p => p.UserId == id).FirstOrDefault();
+        }
+
+        public void UploadProfilePicture(ProfilePicture picture)
+        {
+            context.ProfilePictures.Add(picture);
+            context.SaveChanges();
+        }
+
+        public void DeleteProfilePicture(int id)
+        {
+            var picture = context.ProfilePictures.Where(p => p.UserId == id).FirstOrDefault();
+            if (picture != null)
+            {
+                context.ProfilePictures.Remove(picture);
+                context.SaveChanges();
+            }
+        }
     }
 }

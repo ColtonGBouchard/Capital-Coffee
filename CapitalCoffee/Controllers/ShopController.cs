@@ -94,25 +94,27 @@ namespace CapitalCoffee.Controllers
                 }
                 
                 shopDao.Create(newShop);
-
-                if (ShopPicture.ContentLength <= 5000000 && (ShopPicture.ContentType == "image/gif" || ShopPicture.ContentType == "image/jpeg" || ShopPicture.ContentType == "image/png"))
+                if (ShopPicture != null)
                 {
-                    var image = new DefaultShopPicture()
+                    if (ShopPicture.ContentLength <= 5000000 && (ShopPicture.ContentType == "image/gif" || ShopPicture.ContentType == "image/jpeg" || ShopPicture.ContentType == "image/png"))
                     {
-                        ShopId = newShop.ShopId,
-                        MimeType = ShopPicture.ContentType,
-                        Picture = new byte[ShopPicture.ContentLength]
-                    };
+                        var image = new DefaultShopPicture()
+                        {
+                            ShopId = newShop.ShopId,
+                            MimeType = ShopPicture.ContentType,
+                            Picture = new byte[ShopPicture.ContentLength]
+                        };
 
-                    ShopPicture.InputStream.Read(image.Picture, 0, ShopPicture.ContentLength);
+                        ShopPicture.InputStream.Read(image.Picture, 0, ShopPicture.ContentLength);
 
-                    photoDao.UploadDefaultPicture(image);
-                }
-                else
-                {
-                    TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
-                    shopDao.Delete(newShop.ShopId);
-                    return View(shop);
+                        photoDao.UploadDefaultPicture(image);
+                    }
+                    else
+                    {
+                        TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
+                        shopDao.Delete(newShop.ShopId);
+                        return View(shop);
+                    }
                 }
                 return RedirectToAction("Details", "Shop", new { id = newShop.ShopId });
             }
