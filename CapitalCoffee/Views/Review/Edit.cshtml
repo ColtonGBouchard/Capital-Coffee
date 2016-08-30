@@ -15,6 +15,14 @@
         @*<h4>Review for @Model.Review.Shop.Name by @Model.Review.User.Username</h4>*@
   
         <div class="form-group">
+            @Html.HiddenFor(model => model.ReviewId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.ReviewId)
+                @Html.ValidationMessageFor(model => model.ReviewId)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.HiddenFor(model => model.ShopId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.ShopId)
@@ -32,10 +40,9 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Rating, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Rating)
-                @Html.ValidationMessageFor(model => model.Rating)
-            </div>
+            <input type="range" min="0" max="5" value="@Model.Rating" step="1" id="rating" data-rateit-value="3" data-rateit-ispreset="true" name="rating">
+            <div class="rateit"  data-rateit-backingfld="#rating"></div>
+            @Html.ValidationMessageFor(model => model.Rating)
         </div>
 
 
@@ -60,5 +67,20 @@
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/rateit")
+    @Styles.Render("~/bundles/rateitstyle")
 }
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $("#rating").click(function () {
+
+        var x = $(this).rateit('value');
+        //$("#rating").val(x);
+        console.log(x);
+    });
+
+</script>

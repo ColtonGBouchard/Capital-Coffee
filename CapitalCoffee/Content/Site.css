@@ -46,12 +46,14 @@ input[type="checkbox"].input-validation-error {
     padding: 10px;
     margin: 10px;
     text-align: center;
+    border-radius: 10px;
 }
 
 #shopInfoTable{
     border: 1px solid black;
     width: 900px;
     margin: 10px;
+    border-radius: 10px;
 }
 
 #basicInfo{
@@ -111,7 +113,7 @@ th, td {
 }
 
 #pager{
-    justify-content: center;
+    margin-right: 40px;
     margin-top: 20px;
 }
 
@@ -128,4 +130,108 @@ th, td {
 
 #shopPagedList{
     justify-content: center;
+}
+
+#userInfo{
+    border: 1px solid black;
+    height: 100px;
+    margin-right: 5px;
+    padding: 2px;
+    align-content: center;
+    text-align: center;
+    border-radius: 10px;
+ 
+}
+
+#reviewInfo{
+    border: 1px solid black;
+    height: 100px;
+    padding: 3px;
+    margin-left: 35px;
+    border-radius: 10px;
+}
+
+#reviewListHeader{
+    padding: 10px;
+    background-color: lightgray;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+
+#userReviews{
+    float: right;
+}
+
+#profileReviewDiv{
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+#profilePicture{
+    margin-top: 5px;
+}
+
+#shopUrls{
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+#shopLocation{
+    border: 1px solid black;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+#shopHours{
+    border: 1px solid black;
+    margin-bottom: 5px;
+    border-radius: 10px;
+}
+
+.day{
+    margin: 5px;
+}
+
+#profile{
+    border: 1px solid black;
+    margin-top: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#userPhoto{
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 5px 5px 2px gray;
+}
+
+#editLink{
+    margin-top: 5px;
+}
+
+#tagline, #profileEmail{
+    color: #575757;
+}
+
+#emptyReviewDiv {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#addDefaultShopPhoto{
+    position: relative;
+    top: 5px;
+    left: 478px;   
+}
+
+#shopPicture{
+    position: relative;
+    top: -20px;
+    left: 150px;
 }

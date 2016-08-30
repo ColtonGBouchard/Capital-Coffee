@@ -12,17 +12,11 @@ using CapitalCoffee.Models;
 
 namespace CapitalCoffee.Controllers
 {
-    public class ShopController : Controller
+    public class ShopController : BaseController
     {
         private CapitalCoffeeContext db = new CapitalCoffeeContext();
 
-        // GET: /Shop/
-        public ActionResult Index()
-        {
-            return View(db.Shops.ToList());
-        }
-
-        // GET: /Shop/Details/5
+        [HttpGet]
         public ActionResult Details(int id)
         {
             DetailsViewModel model = new DetailsViewModel();
@@ -31,19 +25,26 @@ namespace CapitalCoffee.Controllers
             var photoDao = new PhotoDao(db);
             var userName = (string)(Session["userName"]);
             var user = userDao.GetByEmailOrUser(userName);
-
-            //if (user == null)
-            //{
-            //    hasReviewed = false;
-            //}
-            //else
+            
+          
             if(user != null)
             {
                 model.UserHasReviewedShop = shopDao.UserHasReviewedShop(id, user.UserId);
+                model.UserIsAdmin = userDao.IsAdmin(user);
             }
 
             model.SelectedShop = shopDao.GetById(id);
             model.Reviews = shopDao.GetReviews(id);
+
+            if (model.Reviews.Any())
+            {
+                foreach (var r in model.Reviews)
+                {
+                    r.User = userDao.GetById(r.UserId);
+                    r.ProfilePicture = photoDao.GetPictureForUser(r.UserId);
+                }
+            }
+
             model.ReviewPictures = shopDao.GetReviewPictures(id);
             model.AverageRating = shopDao.GetAverageRating(id);
             model.HoursOfOperation = shopDao.GetHoursOfOperation(id);
@@ -52,15 +53,13 @@ namespace CapitalCoffee.Controllers
             return View(model);
         }
 
-        // GET: /Shop/Create
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: /Shop/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(ShopCreateViewModel shop, HttpPostedFileBase ShopPicture)
@@ -96,7 +95,7 @@ namespace CapitalCoffee.Controllers
                 shopDao.Create(newShop);
                 if (ShopPicture != null)
                 {
-                    if (ShopPicture.ContentLength <= 5000000 && (ShopPicture.ContentType == "image/gif" || ShopPicture.ContentType == "image/jpeg" || ShopPicture.ContentType == "image/png"))
+                    if(VerifyPhoto(ShopPicture) == true)
                     {
                         var image = new DefaultShopPicture()
                         {
@@ -124,14 +123,11 @@ namespace CapitalCoffee.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: /Shop/Edit/5
-        public ActionResult Edit(int? id)
+        [HttpGet]
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Shop shop = db.Shops.Find(id);
+            var shopDao = new ShopDao(db);
+            Shop shop = shopDao.GetById(id);
             if (shop == null)
             {
                 return HttpNotFound();
@@ -139,45 +135,34 @@ namespace CapitalCoffee.Controllers
             return View(shop);
         }
 
-        // POST: /Shop/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+ 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ShopId,Name,Address1,Address2,City,State,Zip,WebsiteUrl,MenuUrl,FacebookUrl,TwitterUrl,InstagramUrl,IsLocal,IsActive")] Shop shop)
+        public ActionResult Edit(Shop shop)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(shop).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var shopDao = new ShopDao(db);
+                shopDao.Edit(shop);
+                return RedirectToAction("Details", "Shop", new { id = shop.ShopId });
             }
             return View(shop);
         }
 
-        // GET: /Shop/Delete/5
-        public ActionResult Delete(int? id)
+        [HttpGet]
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Shop shop = db.Shops.Find(id);
-            if (shop == null)
-            {
-                return HttpNotFound();
-            }
+            var shopDao = new ShopDao(db);
+            var shop = shopDao.GetById(id);
             return View(shop);
         }
 
-        // POST: /Shop/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Shop shop = db.Shops.Find(id);
-            db.Shops.Remove(shop);
-            db.SaveChanges();
+            var shopDao = new ShopDao(db);
+            shopDao.Delete(id);
             return RedirectToAction("Index");
         }
 

@@ -61,14 +61,21 @@ namespace CapitalCoffee.Data.Access
             return context.Users.Where(u => u.UserId == id).FirstOrDefault();
         }
 
-        public void Edit(int id)
+        public void Edit(User user)
         {
-            var user = context.Users.Find(id);
             if (context.Entry(user).State == EntityState.Modified)
             {
                 context.SaveChanges();
             }
         }
+
+        public bool IsAdmin(User user)
+        {
+            if (user.RoleId == 1)
+                return true;
+            return false;
+        }
+
 
        
     }

@@ -69,11 +69,12 @@
 
 <div id="infoContainer">
     <div id="avgRating" class="pull-left col-lg-2">
+        <div class="rateit" data-rateit-value="@Model.AverageRating" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
         <h3>@Model.AverageRating / 5.0</h3>
         <h4>Based on @Model.Reviews.Count() ratings</h4>
     </div>
 
-    <div id="shopInfoTable" class="pull-right col-lg-8">
+    <div id="shopInfoTable" class="pull-right col-lg-10">
         
         <div id="basicInfo">
             @if (@Model.SelectedShop.Address2 != null)
@@ -131,16 +132,25 @@
                     <th>Open</th>
                     <th>Close</th>
                 </tr>
-                @if(@Model.HoursOfOperation.Any())
-                { 
-                    foreach (var h in @Model.HoursOfOperation)
+
+                @if(@Model.HoursOfOperation.Any() && @Model.HoursOfOperation[0].OpenTimeHour != null)
+                {
+                    foreach(var h in Model.HoursOfOperation)
                     {
                         <tr>
-                            <td>@h.DayOfWeek</td>
+                            @if (@h.DayOfWeek != null) { 
+                            <td>@h.DayOfWeek</td>}
+                           
+                            @if (@h.OpenTimeHour != null) { 
                             <td>@h.OpenTimeHour.ToString():@h.OpenTimeMinute.ToString() @h.OpenAmOrPm</td>
-                            <td>@h.CloseTimeHour.ToString():@h.CloseTimeMinute.ToString() @h.CloseAmOrPm</td>
+                            <td>@h.CloseTimeHour.ToString():@h.CloseTimeMinute.ToString() @h.OpenAmOrPm</td>
+                            }
                         </tr>
                     }
+                }
+                else
+                {
+                    <p>Hours of operation were not provided</p>
                 }
             </table>
             
@@ -152,17 +162,27 @@
 
 <div id="reviewsContainer">
     <div>
-    <div id="reviewListHeader">
-            @if(Model.UserHasReviewedShop == false)
+    <div id="reviewListHeader" class="col-lg-12">
+            @if (Model.UserHasReviewedShop == false)
             {
-                @Html.ActionLink("Add Review", "Add", "Review", new { shopId = Model.SelectedShop.ShopId }, new { @class = "btn btn-primary"})
-                @*<button>Add Review</button>*@
+                <div>
+                    <a href="@Url.Action("Add", "Review", new {shopId = Model.SelectedShop.ShopId})" class="btn btn-primary pull-right">
+                        Add Review <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>               
+                </div>
             }
             else
             {
-                @Html.ActionLink("Edit Review", "Edit", "Review", new { shopId = Model.SelectedShop.ShopId }, new { @class = "btn btn-primary"})
+                <div>
+                    @Html.ActionLink("Edit Review", "Edit", "Review", new { shopId = Model.SelectedShop.ShopId }, new { @class = "btn btn-primary pull-right"})
+                </div>           
+            }
 
-                @*<button>Edit Review</button>*@
+            @if (@Model.UserIsAdmin == true)
+            {
+                <a href="@Url.Action("Edit", "Shop", new { id = @Model.SelectedShop.ShopId })" class="btn btn-primary pull-right">
+                    Edit Shop <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </a> 
             }
     </div>
     @if (Model.Reviews.Any())
@@ -170,16 +190,41 @@
         foreach (var r in Model.Reviews)
         {
             <div id="singleReview">
-                <div id="userInfo" class="col-md-6">
-                    <h4>@r.UserId</h4>
+                <div id="userInfo" class="col-lg-2 pull-left">
+                    <div id="profilePicture" class="center-block">
+                        @if (r.ProfilePicture == null)
+                        {
+                            <img src="https://biz.ttrumpet.com/images/no-image-selected-ttrumpet.png" alt="First" height="60" width="60" />
+                        }
+                        else
+                        {
+                            <img src='@Url.Action("ShowProfilePicture", "Photo", new { id = r.User.UserId })' height="60" width="60" />
+                        }
+                    </div>
+                    <h4>@r.User.Username</h4>
                 </div>
 
                 <div id="reviewInfo" class="col-md-6">
-                    <h4>@r.Rating</h4>
-                    <h4>@r.ReviewText</h4>
+                    <h4>Rating: @r.Rating</h4>
+                    <h4>Review: @r.ReviewText</h4>
                 </div>
             </div>
         }
     }
     </div>
 </div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/rateit")
+    @Styles.Render("~/bundles/rateitstyle")
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+
+</script>

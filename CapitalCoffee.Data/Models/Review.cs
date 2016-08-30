@@ -30,5 +30,8 @@ namespace CapitalCoffee.Data.Models
         public DateTime ? UpdatedAt { get; set; }
 
         public List<ReviewPicture> ReviewPictures { get; set; }
+
+        public int? ProfilePictureId { get; set; }
+        public ProfilePicture ProfilePicture { get; set; }
     }
 }

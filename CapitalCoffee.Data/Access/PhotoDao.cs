@@ -12,11 +12,6 @@ namespace CapitalCoffee.Data.Access
             this.context = context;
         }
 
-        public void UploadProfilePicture()
-        {
-
-        }
-
         public void UploadReviewPicture(ReviewPicture reviewPicture)
         {
             context.ReviewPictures.Add(reviewPicture);
@@ -59,5 +54,6 @@ namespace CapitalCoffee.Data.Access
                 context.SaveChanges();
             }
         }
+
     }
 }

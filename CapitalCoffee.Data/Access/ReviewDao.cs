@@ -20,6 +20,7 @@ namespace CapitalCoffee.Data.Access
         {
             return context.Reviews.Find(id);
         }
+
         public Review GetReviewToEdit(int userId, int shopId)
         {
             return context.Reviews.Where(r => r.ShopId == shopId && r.UserId == userId).FirstOrDefault();

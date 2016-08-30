@@ -1,5 +1,6 @@
 ﻿@model PagedList.IPagedList<CapitalCoffee.Data.Models.Shop>
 @using PagedList.Mvc;
+@using PagedList;
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -15,15 +16,21 @@
     <div id="shopList">
         <div id="shopListHeader">
             <form method="get" action="@Url.Action("Index")">
-                <input type="search" name="searchTerm" autocomplete="off" />
-                <input type="submit" value="Search By Name" class="btn btn-info" />
-                @Html.ActionLink("Add Shop", "Create", "Shop", null, new { @class = "pull-right btn btn-info" })
+                <input type="search" name="searchTerm" autocomplete="off"/>
+                <label for="mySubmit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></label>
+                <input id="mySubmit" type="submit" class="hidden"/>
+                @*@Html.ActionLink("Add Shop", "Create", "Shop", null, new { @class = "pull-right btn btn-info" })*@
+                <a href="@Url.Action("Create", "Shop")" class="pull-right btn btn-info">
+                   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
+                </a>
+
+                Sort: @Html.ActionLink("Rating", "Index", "Home", new { sortTerm = "rating" }, null) |
+                @Html.ActionLink("Alphabetical", "Index", "Home", new { sortTerm = "alphabetical" }, null)
             </form>
-            @*@Html.ActionLink("Add Shop", "Create", "Shop", null, new { @class="pull-right btn btn-primary"})*@
         </div>
         <div class="pagedList" data-pt-target="#shopList" id="shopPagedList">
             @foreach(var shop in Model)
-            {   int output = new int();
+            {   
                 <div id="singleShop">
                 <h3>@Html.ActionLink(@shop.Name, "Details", "Shop", new { id = @shop.ShopId }, null)</h3>
                 <h6>Average Rating: @shop.AverageRating</h6>
@@ -32,7 +39,7 @@
             }
         </div>
 
-        <div id="pager">
+        <div id="pager" class="col-md-6 col-md-offset-4">
             @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.MinimalWithItemCountText)
         </div>
     </div>
@@ -40,19 +47,13 @@
 
 
 <script>
-    var locations = [
-      //['Bondi Beach', '850 Bay st 04 Toronto, Ont'],
-      //['Coogee Beach', '932 Bay Street, Toronto, ON M5S 1B1'],
-      //['Cronulla Beach', '61 Town Centre Court, Toronto, ON M1P'],
-      //['Manly Beach', '832 Bay Street, Toronto, ON M5S 1B1'],
-      //['Maroubra Beach', '606 New Toronto Street, Toronto, ON M8V 2E8']
-    ];
+    var locations = [];
 
     @foreach(var shop in Model)
     {
-        @:locations.push(['@shop.Name','@shop.Address1','@shop.City','@shop.State'])
+        @:locations.push(['@shop.Name','@shop.Address1','@shop.City','@shop.State', '@shop.Zip'])
     }
-    alert(locations);
+
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 10,
@@ -71,7 +72,7 @@
 
 
         function geocodeAddress(location) {
-            geocoder.geocode({ 'address': location[1] }, function (results, status) {
+            geocoder.geocode({ 'address': location[1] + location[2] + location[4]}, function (results, status) {
                 //alert(status);
                 if (status == google.maps.GeocoderStatus.OK) {
 

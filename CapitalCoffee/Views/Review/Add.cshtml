@@ -1,10 +1,9 @@
 ﻿@model CapitalCoffee.Models.AddReviewViewModel
+
 @{
     ViewBag.Title = "Add";
 }
 
-
-<h2>Add</h2>
 
 
 @using (Html.BeginForm("Add", "Review", null, FormMethod.Post, new { enctype = "multipart/form-data" })) 
@@ -41,11 +40,19 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Rating, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @*<div class="col-md-10">
                 @Html.TextBoxFor(model => model.Rating, new { autocomplete = "off" })
                 @Html.ValidationMessageFor(model => model.Rating)
-            </div>
+            </div>*@
+            
+            @*<div class="rateit" data-rateit-max="5"  id="rating" ></div>*@
+
+            <input type="range" min="0" max="5" value="0" step="1" id="rating" name="rating">
+            <div class="rateit" data-rateit-backingfld="#rating"></div>
+            @Html.ValidationMessageFor(model => model.Rating)
         </div>
+
+        
 
         <div class="form-group">
             @Html.LabelFor(model => model.ReviewText, new { @class = "control-label col-md-2" })
@@ -77,6 +84,21 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+
 @section Scripts {
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/rateit")
+    @Styles.Render("~/bundles/rateitstyle")
 }
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $("#rating").click(function () {
+
+        var x = $(this).rateit('value');
+        $("#rating").val(x);
+    });
+
+</script>

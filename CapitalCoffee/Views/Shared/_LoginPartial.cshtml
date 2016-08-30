@@ -8,12 +8,10 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Hello " + (string)HttpContext.Current.Session["userName"] + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink("Hello " + (string)HttpContext.Current.Session["userName"] + "!", "Profile", "User", new { id = Convert.ToInt32(Session["userId"]) }, null)
         </li>
         @*<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>*@
-        <li>
-            @Html.ActionLink("Profile", "Profile", "User", new { id = HttpContext.Current.Session["userId"] })
-        </li>
+
         <li>
             @Html.ActionLink("Log Off", "LogOff", "User")
         </li>

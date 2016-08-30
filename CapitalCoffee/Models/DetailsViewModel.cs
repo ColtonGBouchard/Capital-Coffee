@@ -27,6 +27,7 @@ namespace CapitalCoffee.Models
         public List<ReviewPicture> ReviewPictures { get; set; }
         public List<HoursOfOperation> HoursOfOperation { get; set; }
         public bool UserHasReviewedShop { get; set; }
+        public bool UserIsAdmin { get; set; }
         public DefaultShopPicture DefaultPicture { get; set; }
     }
 }

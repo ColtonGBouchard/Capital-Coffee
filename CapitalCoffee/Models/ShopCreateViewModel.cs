@@ -42,6 +42,7 @@ namespace CapitalCoffee.Models
 
         public List<HoursOfOperation> HoursOfOperation { get; set; }
         public Shop Shop { get; set; }
+        [DisplayName("Default Shop Photo:")]
         public DefaultShopPicture DefaultShopPicture { get; set; }
      
     }

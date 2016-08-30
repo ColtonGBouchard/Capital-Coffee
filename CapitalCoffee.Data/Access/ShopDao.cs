@@ -23,12 +23,77 @@ namespace CapitalCoffee.Data.Access
             return context.Shops.Find(id);
         }
 
-        public IPagedList<Shop> GetAll(string searchTerm = " ", int page = 1)
+        //public IPagedList<Shop> GetAll(string searchTerm = " ", int page = 1, string orderTerm = " ")
+        //{
+        //    var shopList = context.Shops.Where(s => s.Name.Contains(searchTerm)).OrderBy(s => s.Name).ToList();
+        //    var pagedList = shopList.ToPagedList(page, 5);
+        //    foreach(var s in pagedList)
+        //    {
+        //        s.Reviews = context.Reviews.Where(r => r.ShopId == s.ShopId).ToList();
+
+        //        if (s.Reviews.Count() > 0)
+        //        {
+        //            var ratingSum = 0;
+
+        //            foreach (var r in s.Reviews)
+        //            {
+        //                ratingSum += r.Rating;
+        //            }
+
+        //            var averageRating = ratingSum / s.Reviews.Count();
+
+        //            s.AverageRating = averageRating;
+        //        }
+        //        else
+        //        {
+        //            s.AverageRating = 0;
+        //        }
+        //    }
+
+        //    if(orderTerm == "rating")
+        //    {
+        //        shopList = shopList.OrderByDescending(s => s.AverageRating).ToList();
+        //        var finalList = shopList.ToPagedList(page, 5);
+        //        return finalList;
+        //    }
+
+        //    return pagedList;    
+        //}
+
+        public List<Shop> GetAll(string searchTerm = " ", string orderTerm = " ")
         {
-            var shopList = context.Shops.Where(s => s.Name.Contains(searchTerm)).OrderBy(s => s.Name).ToPagedList(page, 5);
+            var shopList = context.Shops.Where(s => s.Name.Contains(searchTerm)).OrderBy(s => s.Name).ToList();
+            foreach (var s in shopList)
+            {
+                s.Reviews = context.Reviews.Where(r => r.ShopId == s.ShopId).ToList();
+
+                if (s.Reviews.Count() > 0)
+                {
+                    var ratingSum = 0;
+
+                    foreach (var r in s.Reviews)
+                    {
+                        ratingSum += r.Rating;
+                    }
+
+                    var averageRating = ratingSum / s.Reviews.Count();
+
+                    s.AverageRating = averageRating;
+                }
+                else
+                {
+                    s.AverageRating = 0;
+                }
+            }
+
+            if (orderTerm == "rating")
+            {
+                shopList = shopList.OrderByDescending(s => s.AverageRating).ToList();
+                return shopList;
+            }
+
             return shopList;
         }
-
         public void Create(Shop shop)
         {
             shop.IsActive = true;

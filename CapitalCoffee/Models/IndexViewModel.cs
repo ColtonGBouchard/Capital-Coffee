@@ -12,9 +12,5 @@ namespace CapitalCoffee.Models
         public List<int> ShopIds { get; set; }
 
         public List<Shop> Shops { get; set; }
-
-        //public List<String> ShopNames { get; set; }
-        //public List<String> Addresses { get; set; }
-        //public List<String> Ratings { get; set; }
     }
 }

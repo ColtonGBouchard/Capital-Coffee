@@ -114,9 +114,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+            @Html.HiddenFor(model => model.IsActive, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.IsActive)
+                @Html.HiddenFor(model => model.IsActive)
                 @Html.ValidationMessageFor(model => model.IsActive)
             </div>
         </div>

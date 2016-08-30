@@ -12,7 +12,7 @@ using CapitalCoffee.Data.Access;
 
 namespace CapitalCoffee.Controllers
 {
-    public class ReviewController : Controller
+    public class ReviewController : BaseController
     {
         private CapitalCoffeeContext db = new CapitalCoffeeContext();
 
@@ -49,11 +49,15 @@ namespace CapitalCoffee.Controllers
                 review.Review.ReviewText = review.ReviewText;
                 reviewDao.AddReview(review.Review);
 
-                if (ReviewPictures.Count < 6)
+                if(ReviewPictures[0] == null)
+                {
+                    return RedirectToAction("Details", "Shop", new { id = review.ShopId });
+                }
+                else if (ReviewPictures[0] != null && ReviewPictures.Count > 0 && ReviewPictures.Count < 6)
                 {
                     foreach (var p in ReviewPictures)
                     {
-                        if (p.ContentLength <= 5000000 && (p.ContentType == "image/gif" || p.ContentType == "image/jpeg" || p.ContentType == "image/png"))
+                        if(VerifyPhoto(p) == true)
                         {
                             var image = new ReviewPicture()
                             {
@@ -113,6 +117,10 @@ namespace CapitalCoffee.Controllers
             if (ModelState.IsValid)
             {
                 var reviewDao = new ReviewDao(db);
+                //var editedReview = reviewDao.GetById(review.ReviewId);
+                //editedReview.Rating = review.Rating;
+                //editedReview.ReviewText = review.ReviewText;
+
                 reviewDao.EditReview(review);
                 return RedirectToAction("Details", "Shop", new {id = review.ShopId});
             }

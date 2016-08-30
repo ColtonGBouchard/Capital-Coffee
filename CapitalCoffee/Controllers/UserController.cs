@@ -13,7 +13,7 @@ using System.Web.Security;
 
 namespace CapitalCoffee.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private CapitalCoffeeContext db = new CapitalCoffeeContext();
 
@@ -35,7 +35,7 @@ namespace CapitalCoffee.Controllers
                 newUser.Username = user.Username;
                 newUser.EmailAddress = user.Email;
                 userDao.RegisterAccount(newUser, password);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Profile", "User", new { id = newUser.UserId });
             }
 
             return View();
@@ -61,6 +61,9 @@ namespace CapitalCoffee.Controllers
 
                 var user = userDao.GetByEmailOrUser(login.EmailOrUsername);
                 Session["userName"] = user.Username;
+                Session["userId"] = user.UserId;
+               
+                
 
                 Session.Timeout = 90;
                 return RedirectToAction("Index", "Home", null); 
@@ -70,6 +73,12 @@ namespace CapitalCoffee.Controllers
         public ActionResult LogOff()
         {
             Session.Remove("userName");
+
+            if (Request.Cookies["sortCookie"] != null)
+            {
+                Response.Cookies["sortCookie"].Expires = DateTime.Now.AddDays(-1);
+            }
+
             return RedirectToAction("Index", "Home", null);
         }
 
@@ -88,19 +97,12 @@ namespace CapitalCoffee.Controllers
             var reviews = reviewDao.GetAllReviewsByUser(id);
             
             vm.User = user;
-            vm.UserId = user.UserId;
-
+            vm.User.UserId = user.UserId;
             if (reviews != null)
             {
-                vm.Reviews = reviews;
+                vm.User.Reviews = reviews;
             }
              
-            //if (picture != null)
-            //{
-            //    vm.ProfilePicture = picture;
-            //    vm.ProfilePictureId = picture.ProfilePictureId;
-            //}
-
             return PartialView("~/Views/User/_Edit.cshtml", vm);
         }
 
@@ -113,13 +115,19 @@ namespace CapitalCoffee.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 var userDao = new UserDao(db);
                 var photoDao = new PhotoDao(db);
-                var user = vm.User;
-                userDao.Edit(user.UserId);
+                var user = userDao.GetById(vm.User.UserId);
+
+                user.Username = vm.User.Username;
+                user.Tagline = vm.User.Tagline;
+                user.EmailAddress = vm.User.EmailAddress;
+
+                userDao.Edit(user);
 
                 if(photo != null)
                 {
                     photoDao.DeleteProfilePicture(vm.User.UserId);
-                    if (photo.ContentLength <= 5000000 && (photo.ContentType == "image/gif" || photo.ContentType == "image/jpeg" || photo.ContentType == "image/png"))
+
+                    if (VerifyPhoto(photo) == true)
                     {
                         var image = new ProfilePicture()
                         {
@@ -139,7 +147,6 @@ namespace CapitalCoffee.Controllers
                     }
                 }
 
-                db.SaveChanges();
                 return RedirectToAction("Profile", "User", new { id = vm.User.UserId });
             }
 
@@ -187,6 +194,7 @@ namespace CapitalCoffee.Controllers
             var userDao = new UserDao(db);
             var photoDao = new PhotoDao(db);
             var reviewDao = new ReviewDao(db);
+            var shopDao = new ShopDao(db);
             var vm = new ProfilePageViewModel();
 
             var user = userDao.GetById(id);
@@ -202,6 +210,10 @@ namespace CapitalCoffee.Controllers
             if(reviews.Any())
             {
                 vm.Reviews = reviews;
+                foreach(var r in vm.Reviews)
+                {
+                    r.Shop = shopDao.GetById(r.ShopId);
+                }
             }
             
             return View(vm);

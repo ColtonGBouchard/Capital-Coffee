@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,5 @@ namespace CapitalCoffee.Data.Models
 
         public List<int> ReviewIds { get; set; }
         public List<Review> Reviews { get; set; }
-
     }
 }

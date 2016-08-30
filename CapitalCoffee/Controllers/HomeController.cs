@@ -14,36 +14,39 @@ namespace CapitalCoffee.Controllers
     {
         private CapitalCoffeeContext db = new CapitalCoffeeContext();
 
-        public ActionResult Index(string currentFilter, int page = 1, string searchTerm = " ")
+        [HttpGet]
+        public ActionResult Index(string currentFilter, int? page, string searchTerm = " ", string sortTerm="")
         {
-            //var vm = new IndexViewModel();
-            var shopDao = new ShopDao(db);
-            var shopList = shopDao.GetAll(searchTerm, page);
-            foreach (var shop in shopList)
+            
+            var pageSize = 2;
+            var pageNumber = page ?? 1;
+
+            if(this.ControllerContext.HttpContext.Request.Cookies.AllKeys.Contains("sortCookie"))
             {
-                shop.AverageRating = shopDao.GetAverageRating(shop.ShopId);
-                if(shop.AverageRating == null)
+                if (sortTerm == "")
                 {
-                    shop.AverageRating = 0;
+                    sortTerm = HttpContext.Request.Cookies["sortCookie"].Value;
                 }
             }
 
-            //vm.Shops = shopList;
-            return View(shopList);
-        }
+            var shopDao = new ShopDao(db);
+            var shopList = shopDao.GetAll(searchTerm, sortTerm);
+            var pagedList = shopList.ToPagedList(pageNumber, pageSize);
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+           
+            if (HttpContext.Request.Cookies["sortCookie"] == null)
+            {
+                if (Session["userName"] != null)
+                {
+                    if (sortTerm != "")
+                    {
+                        var cookie = new HttpCookie("sortCookie", sortTerm);
+                        Response.Cookies.Add(cookie);
+                    }
+                }
+            }
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return View(pagedList);
         }
     }
 }
