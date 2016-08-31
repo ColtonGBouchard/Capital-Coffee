@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using CapitalCoffee.Data.Models;
 using System.ComponentModel.DataAnnotations;
 namespace CapitalCoffee.Models
@@ -9,7 +6,6 @@ namespace CapitalCoffee.Models
     public class AddReviewViewModel
     {
         public Review Review { get; set; }
-        //public List<ReviewPicture> ReviewPictures { get; set; }
         [Display(Name="Add pictures to your review")]
         public HttpPostedFileBase ReviewPicture { get; set; }
         public int ShopId { get; set; }

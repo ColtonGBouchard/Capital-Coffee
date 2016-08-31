@@ -4,7 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<h2 id="detailsTitle">@Model.SelectedShop.Name</h2>
+<h2 id="detailsTitle" style="color: White;">@Model.SelectedShop.Name</h2>
 
 <div id="shopCarousel" class="carousel slide" data-ride="carousel">
 
@@ -20,9 +20,7 @@
     {
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                @*<img src="https://s3-media2.fl.yelpcdn.com/bphoto/gCJxTUpIK6PBWTT8LIcQhA/ls.jpg" alt="First" />*@
                 <img src='@Url.Action( "ShowDefaultPicture", "Photo", new { id = @Model.SelectedShop.ShopId} )' />
-
             </div>  
         </div>
     }
@@ -30,9 +28,7 @@
     {
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                @*<img src="https://s3-media2.fl.yelpcdn.com/bphoto/gCJxTUpIK6PBWTT8LIcQhA/ls.jpg" alt="First" />*@
                 <img src='@Url.Action( "ShowReviewPicture", "Photo", new { id = @Model.SelectedShop.ShopId} )' />
-
             </div>  
         </div>
     }
@@ -69,9 +65,16 @@
 
 <div id="infoContainer">
     <div id="avgRating" class="pull-left col-lg-2">
-        <div class="rateit" data-rateit-value="@Model.AverageRating" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
-        <h3>@Model.AverageRating / 5.0</h3>
-        <h4>Based on @Model.Reviews.Count() ratings</h4>
+        @if (Model.AverageRating != null) 
+        { 
+            <div class="rateit" data-rateit-value="@Model.AverageRating" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+            <h3>@Model.AverageRating / 5.0</h3>
+            <h4>Based on @Model.Reviews.Count() ratings</h4>
+        }
+        else
+        {
+            <h4>There are no reviews for this shop yet</h4>
+        }
     </div>
 
     <div id="shopInfoTable" class="pull-right col-lg-10">
@@ -90,11 +93,11 @@
 
             @if (@Model.SelectedShop.IsLocal == true)
             {
-                <h5><b>Local Shop</b></h5>
+                <h5><b><span class="glyphicon glyphicon-home"></span> Local Shop</b></h5>
             }
             else
             {
-                <h4>National Chain</h4>
+                <h4><b><span class="glyphicon glyphicon-globe"></span> National Chain</b></h4>
             }
 
             @if (@Model.SelectedShop.WebsiteUrl != null)
@@ -127,19 +130,48 @@
         <div id="hours">
           
             <table id="hoursTable">
-                <tr>
-                    <th>Day</th>
-                    <th>Open</th>
-                    <th>Close</th>
-                </tr>
+                
 
                 @if(@Model.HoursOfOperation.Any() && @Model.HoursOfOperation[0].OpenTimeHour != null)
                 {
+                    <tr>
+                        <th>Day</th>
+                        <th>Open</th>
+                        <th>Close</th>
+                    </tr>
                     foreach(var h in Model.HoursOfOperation)
                     {
                         <tr>
                             @if (@h.DayOfWeek != null) { 
-                            <td>@h.DayOfWeek</td>}
+                                if(@h.DayOfWeek == 0)
+                                {
+                                    <td>Sunday</td>
+                                }
+                                else if(@h.DayOfWeek == 1)
+                                {
+                                    <td>Monday</td>
+                                }
+                                else if(@h.DayOfWeek == 2)
+                                {
+                                    <td>Tuesday</td>
+                                }
+                                else if(@h.DayOfWeek == 3)
+                                {
+                                    <td>Wednesday</td>
+                                }
+                                else if(@h.DayOfWeek == 4)
+                                {
+                                    <td>Thursday</td>
+                                }
+                                else if(@h.DayOfWeek == 5)
+                                {
+                                    <td>Friday</td>
+                                }
+                                else if(@h.DayOfWeek == 6)
+                                {
+                                    <td>Saturday</td>
+                                }
+                            }
                            
                             @if (@h.OpenTimeHour != null) { 
                             <td>@h.OpenTimeHour.ToString():@h.OpenTimeMinute.ToString() @h.OpenAmOrPm</td>
@@ -150,7 +182,7 @@
                 }
                 else
                 {
-                    <p>Hours of operation were not provided</p>
+                    <h4>Hours of operation were not provided</h4>
                 }
             </table>
             
@@ -166,7 +198,7 @@
             @if (Model.UserHasReviewedShop == false)
             {
                 <div>
-                    <a href="@Url.Action("Add", "Review", new {shopId = Model.SelectedShop.ShopId})" class="btn btn-primary pull-right">
+                    <a href="@Url.Action("Add", "Review", new {shopId = Model.SelectedShop.ShopId})" class="btn btn-info pull-right">
                         Add Review <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </a>               
                 </div>
@@ -174,14 +206,21 @@
             else
             {
                 <div>
-                    @Html.ActionLink("Edit Review", "Edit", "Review", new { shopId = Model.SelectedShop.ShopId }, new { @class = "btn btn-primary pull-right"})
+                    <a href="@Url.Action("Edit", "Review", new{shopId = Model.SelectedShop.ShopId})" class="btn btn-info pull-right">
+                        Edit Review <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                    @*@Html.ActionLink("Edit Review", "Edit", "Review", new { shopId = Model.SelectedShop.ShopId }, new { @class = "btn btn-info pull-right"})*@
                 </div>           
             }
 
             @if (@Model.UserIsAdmin == true)
             {
-                <a href="@Url.Action("Edit", "Shop", new { id = @Model.SelectedShop.ShopId })" class="btn btn-primary pull-right">
+                <a href="@Url.Action("Edit", "Shop", new { id = @Model.SelectedShop.ShopId })" class="btn btn-info pull-right" id="editShop">
                     Edit Shop <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </a> 
+                
+                <a href="@Url.Action("Delete", "Shop", new { id = @Model.SelectedShop.ShopId })" class="btn btn-info pull-right" id="delete">
+                    Delete Shop <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                 </a> 
             }
     </div>
@@ -201,10 +240,10 @@
                             <img src='@Url.Action("ShowProfilePicture", "Photo", new { id = r.User.UserId })' height="60" width="60" />
                         }
                     </div>
-                    <h4>@r.User.Username</h4>
+                    <h4>@Html.ActionLink(@r.User.Username, "Profile", "User", new {id = @r.User.UserId}, null)</h4>
                 </div>
 
-                <div id="reviewInfo" class="col-md-6">
+                <div id="reviewInfo" class="col-md-9">
                     <h4>Rating: @r.Rating</h4>
                     <h4>Review: @r.ReviewText</h4>
                 </div>

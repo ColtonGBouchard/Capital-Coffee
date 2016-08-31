@@ -5,65 +5,74 @@
 }
 
 <div id="profileContainer">
-    <div id="profilePicture" class="center-block">
+    <div id="profilePicture" class="col-lg-2 col-lg-offset-2">
         @if (Model.ProfilePicture == null)
         {
-            <img src="https://biz.ttrumpet.com/images/no-image-selected-ttrumpet.png" alt="First" height="200" width="200" id="userPhoto"/>
+            <img src="https://biz.ttrumpet.com/images/no-image-selected-ttrumpet.png" alt="First" height="200" width="200" id="userPhoto" />
         }
         else
         {
-            <img src='@Url.Action("ShowProfilePicture", "Photo", new { id = @Model.User.UserId })' height="200" width="200" id="userPhoto"/>
+            <img src='@Url.Action("ShowProfilePicture", "Photo", new { id = @Model.User.UserId })' height="200" width="200" id="userPhoto" />
+        }
+        @if (Convert.ToInt32(Session["userId"]) == Model.User.UserId)
+        {
+            <div class="col-lg-offset-5" id="editLink">
+                @Ajax.ActionLink("Edit Profile",
+                         "Edit",
+                         "User",
+                          new { id = @Model.User.UserId },
+                         new AjaxOptions
+                         {
+                             HttpMethod = "GET",
+                             InsertionMode = InsertionMode.Replace,
+                             UpdateTargetId = "profile"
+                         })
+
+            </div>
         }
     </div>
 
-    <div class="pull-left col-lg-12" id="editLink">
-        @Ajax.ActionLink("Edit Profile",
-                     "Edit",
-                     "User",
-                      new { id = @Model.User.UserId },
-                     new AjaxOptions
-                     {
-                         HttpMethod = "GET",
-                         InsertionMode = InsertionMode.Replace,
-                         UpdateTargetId = "profile"
-                     })
-    
+   
+
+
+    <div id="userReviews" class="pull-right col-lg-6">
+        <h3 style="text-align: center; color: white;">Reviews</h3>
+        @if (Model.Reviews != null)
+        {
+            foreach (var r in Model.Reviews)
+            {
+                <div id="profileReviewDiv">
+                    <h3>@Html.ActionLink(r.Shop.Name, "Details", "Shop", new {id = r.ShopId}, null)</h3>
+                    <h5>@r.Shop.Address1</h5>
+                    @if (r.Shop.Address2 != null)
+                    {
+                        <h5>@r.Shop.Address2</h5>
+                    }
+                    <h5>Rating: @r.Rating</h5>
+                    <h5>Review: @r.ReviewText</h5>
+                </div>
+            }
+        }
+        else
+        {
+            <h4 id="emptyReviewDiv">@Model.User.Username hasn't written any reviews yet</h4>
+        }
     </div>
-        <div id="profile" class="pull-left col-lg-6">
-            <div id="userBasicInfo">
-                <h2>@Model.User.Username</h2>
-                @if (Model.User.Tagline != null)
-                {
-                    <h4 id="tagline">"@Model.User.Tagline"</h4>
-                }
 
-                <h4 id="profileEmail">@Model.User.EmailAddress</h4>
-            </div>
-        </div>
+    <div id="profile" class="col-lg-6 pull-left">
+        <div id="userBasicInfo">
+            <h2>@Model.User.Username</h2>
+            @if (Model.User.Tagline != null)
+            {
+                <h4 id="tagline">"@Model.User.Tagline"</h4>
+            }
 
-        <div id="userReviews" class="pull-right col-lg-6">
-            <h3 style="text-align: center;">Reviews</h3>
-            @if (Model.Reviews != null)
-            {
-                foreach (var r in Model.Reviews)
-                {
-                    <div id="profileReviewDiv">
-                        <h3>@r.Shop.Name</h3>
-                        <h5>@r.Shop.Address1</h5>
-                        @if (r.Shop.Address2 != null)
-                        {
-                            <h5>@r.Shop.Address2</h5>
-                        }
-                        <h5>Rating: @r.Rating</h5>
-                        <h5>Review: @r.ReviewText</h5>
-                    </div>
-                }
-            }
-            else
-            {
-                <h4 id="emptyReviewDiv">@Model.User.Username hasn't written any reviews yet</h4>
-            }
+            <h4 id="profileEmail">@Model.User.EmailAddress</h4>
         </div>
+    </div>
+</div>
+
+
 
 </div>
 

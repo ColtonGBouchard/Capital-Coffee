@@ -4,22 +4,20 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2 style="color: white;">Edit</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>Shop</h4>
-        <hr />
+    <div class="form-horizontal editReview">
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.ShopId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.Name)
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
@@ -27,7 +25,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Address1, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.Address1)
                 @Html.ValidationMessageFor(model => model.Address1)
             </div>
@@ -35,7 +33,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Address2, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.Address2)
                 @Html.ValidationMessageFor(model => model.Address2)
             </div>
@@ -43,7 +41,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.City, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.City)
                 @Html.ValidationMessageFor(model => model.City)
             </div>
@@ -51,7 +49,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.State, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.State)
                 @Html.ValidationMessageFor(model => model.State)
             </div>
@@ -59,7 +57,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Zip, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.Zip)
                 @Html.ValidationMessageFor(model => model.Zip)
             </div>
@@ -67,7 +65,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.WebsiteUrl, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.WebsiteUrl)
                 @Html.ValidationMessageFor(model => model.WebsiteUrl)
             </div>
@@ -75,7 +73,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.MenuUrl, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.MenuUrl)
                 @Html.ValidationMessageFor(model => model.MenuUrl)
             </div>
@@ -83,7 +81,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.FacebookUrl, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.FacebookUrl)
                 @Html.ValidationMessageFor(model => model.FacebookUrl)
             </div>
@@ -91,7 +89,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.TwitterUrl, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.TwitterUrl)
                 @Html.ValidationMessageFor(model => model.TwitterUrl)
             </div>
@@ -99,7 +97,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.InstagramUrl, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 editText">
                 @Html.EditorFor(model => model.InstagramUrl)
                 @Html.ValidationMessageFor(model => model.InstagramUrl)
             </div>
@@ -123,15 +121,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Cancel", "Details", "Shop", new { id = Model.ShopId }, new { @class="btn btn-default"})
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+@Html.ActionLink("Change Password", "ChangePassword", "User")
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

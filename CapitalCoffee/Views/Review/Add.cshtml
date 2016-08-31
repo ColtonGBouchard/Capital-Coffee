@@ -10,8 +10,8 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>AddReviewViewModel</h4>
+    <div class="form-horizontal addReview">
+        <h4>Add Review</h4>
         <hr />
 
         @if (TempData["notice"] != null)
@@ -56,7 +56,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.ReviewText, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 addReviewText">
                 @Html.TextBoxFor(model => model.ReviewText, new { autocomplete = "off" })
                 @Html.ValidationMessageFor(model => model.ReviewText)
             </div>
@@ -74,7 +74,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-info" />
+                @Html.ActionLink("Back", "Details", "Shop", new { id = Model.ShopId }, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>

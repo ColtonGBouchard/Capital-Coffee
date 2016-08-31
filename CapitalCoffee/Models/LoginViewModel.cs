@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CapitalCoffee.Models
 {
@@ -12,6 +8,5 @@ namespace CapitalCoffee.Models
         [Display(Name="Email or Username")]
         public string EmailOrUsername { get; set; }
         public string Password { get; set; }
-        public bool RememberMe { get; set; }
     }
 }

@@ -16,10 +16,9 @@
     <div id="shopList">
         <div id="shopListHeader">
             <form method="get" action="@Url.Action("Index")">
-                <input type="search" name="searchTerm" autocomplete="off"/>
+                <input type="search" name="searchTerm" class="editText" autocomplete="off"/>
                 <label for="mySubmit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></label>
                 <input id="mySubmit" type="submit" class="hidden"/>
-                @*@Html.ActionLink("Add Shop", "Create", "Shop", null, new { @class = "pull-right btn btn-info" })*@
                 <a href="@Url.Action("Create", "Shop")" class="pull-right btn btn-info">
                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
                 </a>
@@ -33,8 +32,15 @@
             {   
                 <div id="singleShop">
                 <h3>@Html.ActionLink(@shop.Name, "Details", "Shop", new { id = @shop.ShopId }, null)</h3>
-                <h6>Average Rating: @shop.AverageRating</h6>
-                <h6>@shop.Address1, @shop.Address2 @shop.City, @shop.State @shop.Zip</h6>   
+                @if(@shop.AverageRating == null)
+                {
+                    <h5>This shop has not been reviewed yet.</h5>
+                }
+                else 
+                { 
+                    <h5>Average Rating: @shop.AverageRating</h5>
+                }
+                <h5>@shop.Address1, @shop.Address2 @shop.City, @shop.State @shop.Zip</h5>   
                 </div>
             }
         </div>
@@ -56,7 +62,7 @@
 
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
+            zoom: 12,
             center: new google.maps.LatLng(-34.397, 150.644),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         });

@@ -4,7 +4,14 @@
     ViewBag.Title = "Create";
 }
 
-<h2 class="text-center">Add New Shop</h2>
+<h2 class="text-center" style="color: white;">Add New Shop</h2>
+
+@if (TempData["notice"] != null)
+{
+    <div id="invalidEmail" style="color:white;">
+        @Html.Encode(TempData["notice"])
+    </div>
+}
 
 @{
     List<SelectListItem> minutes = new List<SelectListItem>();
@@ -52,27 +59,24 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div class="form-horizontal create-form">
 
         @Html.ValidationSummary(true)
 
 
-        <div class="form-group">
+        <div class="form-group create-header">
             <div class="col-lg-8 col-lg-offset-4">
-                @Html.LabelFor(model => model.Shop.Name, new { @class = "control-label col-md-2" })
-            @*</div>
-            <div>*@
-                <div >
+                @Html.LabelFor(model => model.Shop.Name, new { @class = "control-label col-md-2l" })
+          
+                <div class="addShop">
                     @Html.EditorFor(model => model.Shop.Name)
                     @Html.ValidationMessageFor(model => model.Shop.Name)
                 </div>
             </div>
             <div class="form-group col-lg-8 col-lg-offset-4" id="addDefaultShopPhoto">
-                @Html.LabelFor(model => model.DefaultShopPicture, new { @class = "control-label " })
-                @*<div>*@
+                @Html.LabelFor(model => model.DefaultShopPicture, new { @class = "control-label white-label" })
                 <input name="ShopPicture" type="file" accept="image/gif, image/jpeg, image/png" id="shopPicture" multiple />
                 @Html.ValidationMessageFor(model => model.DefaultShopPicture)
-                @*</div>*@
             </div>
         </div>
         
@@ -82,7 +86,7 @@
             <h4>Shop Location (required)</h4>
             <div class="form-group">
                 @Html.LabelFor(model => model.Shop.Address1, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-10 addShop">
                     @Html.EditorFor(model => model.Shop.Address1)
                     @Html.ValidationMessageFor(model => model.Shop.Address1)
                 </div>
@@ -90,31 +94,16 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Shop.Address2, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-10 addShop">
                     @Html.EditorFor(model => model.Shop.Address2)
                     @Html.ValidationMessageFor(model => model.Shop.Address2)
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Shop.City, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Shop.City)
-                    @Html.ValidationMessageFor(model => model.Shop.City)
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Shop.State, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Shop.State)
-                    @Html.ValidationMessageFor(model => model.Shop.State)
-                </div>
-            </div>
-
+            
             <div class="form-group">
                 @Html.LabelFor(model => model.Shop.Zip, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-10 addShop">
                     @Html.EditorFor(model => model.Shop.Zip)
                     @Html.ValidationMessageFor(model => model.Shop.Zip)
                 </div>
@@ -122,11 +111,28 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Shop.IsLocal, new { @class = "control-label col-md-5" })
-                <div class="col-md-5">
+                <div class="col-md-5 addShop">
                     @Html.EditorFor(model => model.Shop.IsLocal)
                     @Html.ValidationMessageFor(model => model.Shop.IsLocal)
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(model => model.Shop.City, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 addShop">
+                    @Html.HiddenFor(model => model.Shop.City)
+                    @Html.ValidationMessageFor(model => model.Shop.City)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.HiddenFor(model => model.Shop.State, new { @class = "control-label col-md-2" })
+                <div class="col-md-10 addShop">
+                    @Html.HiddenFor(model => model.Shop.State)
+                    @Html.ValidationMessageFor(model => model.Shop.State)
+                </div>
+            </div>
+
         </div>
 
         <div class="col-md-2"></div>
@@ -135,7 +141,7 @@
             <h4>Shop Links (optional)</h4>
             <div class="form-group">
                 @Html.LabelFor(model => model.Shop.WebsiteUrl, new { @class = "control-label col-md-2" })
-                <div class="col-md-offset-1 col-md-6">
+                <div class="col-md-offset-1 col-md-6 addShop">
                     @Html.EditorFor(model => model.Shop.WebsiteUrl)
                     @Html.ValidationMessageFor(model => model.Shop.WebsiteUrl)
                 </div>
@@ -143,7 +149,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Shop.MenuUrl, new { @class = "control-label col-md-2" })
-                <div class="col-md-offset-1 col-md-6">
+                <div class="col-md-offset-1 col-md-6 addShop">
                     @Html.EditorFor(model => model.Shop.MenuUrl)
                     @Html.ValidationMessageFor(model => model.Shop.MenuUrl)
                 </div>
@@ -151,7 +157,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Shop.FacebookUrl, new { @class = "control-label col-md-2" })
-                <div class="col-md-offset-1 col-md-6">
+                <div class="col-md-offset-1 col-md-6 addShop">
                     @Html.EditorFor(model => model.Shop.FacebookUrl)
                     @Html.ValidationMessageFor(model => model.Shop.FacebookUrl)
                 </div>
@@ -159,7 +165,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Shop.TwitterUrl, new { @class = "control-label col-md-2" })
-                <div class="col-md-offset-1 col-md-6">
+                <div class="col-md-offset-1 col-md-6 addShop">
                     @Html.EditorFor(model => model.Shop.TwitterUrl)
                     @Html.ValidationMessageFor(model => model.Shop.TwitterUrl)
                 </div>
@@ -167,7 +173,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Shop.InstagramUrl, new { @class = "control-label col-md-2" })
-                <div class="col-md-offset-1 col-md-6">
+                <div class="col-md-offset-1 col-md-6 addShop">
                     @Html.EditorFor(model => model.Shop.InstagramUrl)
                     @Html.ValidationMessageFor(model => model.Shop.InstagramUrl)
                 </div>
@@ -197,32 +203,40 @@
                 <div class="text-center">Sunday</div>
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[0].OpenTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].OpenTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].OpenAmOrPm, amOrPm, "-- AM or PM --")
-                </div>
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].OpenTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
+                </div>  
             
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[0].CloseTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].CloseTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].CloseTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[0].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
             </div>
             <div class="day">
                 <div class="text-center">Monday</div>
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[1].OpenTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].OpenTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].OpenTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
 
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[1].CloseTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].CloseTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].CloseTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[1].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
             </div>
 
@@ -230,16 +244,20 @@
                 <div class="text-center">Tuesday</div>
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[2].OpenTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].OpenTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].OpenTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
 
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[2].CloseTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].CloseTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].CloseTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[2].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
             </div>
 
@@ -247,16 +265,21 @@
                 <div class="text-center">Wednesday</div>
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[3].OpenTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].OpenTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].OpenTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
+
 
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[3].CloseTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].CloseTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].CloseTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[3].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
             </div>
 
@@ -264,16 +287,20 @@
                 <div class="text-center">Thursday</div>
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[4].OpenTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].OpenTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].OpenTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
 
                 <div class="col-lg-offset-1 col-lg-10">
-                     @Html.LabelFor(model => model.Shop.HoursOfOperation[4].CloseTimeHour, new { @class = "control-label col-md-2 date" })
-                     @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                     @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].CloseTimeMinute, minutes, "-- Minute --")
-                     @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    @Html.LabelFor(model => model.Shop.HoursOfOperation[4].CloseTimeHour, new { @class = "control-label col-md-2 date" })
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].CloseTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[4].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
             </div>
             
@@ -281,16 +308,20 @@
                 <div class="text-center col-lg-12">Friday</div>
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[5].OpenTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].OpenTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].OpenTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
 
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[5].CloseTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].CloseTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].CloseTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[5].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
             </div>
 
@@ -298,24 +329,28 @@
                 <div class="text-center">Saturday</div>
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[6].OpenTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].OpenTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].OpenTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].OpenTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].OpenAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
 
                 <div class="col-lg-offset-1 col-lg-10">
                     @Html.LabelFor(model => model.Shop.HoursOfOperation[6].CloseTimeHour, new { @class = "control-label col-md-2 date" })
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].CloseTimeMinute, minutes, "-- Minute --")
-                    @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    <div class="addShop">
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].CloseTimeHour, Enumerable.Range(01, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }), "-- Hour --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].CloseTimeMinute, minutes, "-- Minute --")
+                        @Html.DropDownListFor(Model => Model.Shop.HoursOfOperation[6].CloseAmOrPm, amOrPm, "-- AM or PM --")
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        <div class="col-md-offset-5 col-md-2">
-            <input type="submit" value="Create" class="btn btn-primary"/>
+        <div class="col-md-offset-5 col-md-2" id="createButtons">
+            <input type="submit" value="Create" class="btn btn-info"/>
             @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-default"})
         </div>
     </div>

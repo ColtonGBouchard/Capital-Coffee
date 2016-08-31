@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Entity;
+
 namespace CapitalCoffee.Data.Access
 {
     public class ReviewDao
@@ -16,10 +15,6 @@ namespace CapitalCoffee.Data.Access
             this.context = context;
         }
 
-        public Review GetById(int id)
-        {
-            return context.Reviews.Find(id);
-        }
 
         public Review GetReviewToEdit(int userId, int shopId)
         {
@@ -38,11 +33,6 @@ namespace CapitalCoffee.Data.Access
             review.CreatedAt = DateTime.Now;
             context.Reviews.Add(review);
             context.SaveChanges();
-        }
-
-        public Review GetReviewByUser(int userId)
-        {
-            return context.Reviews.Where(r => r.UserId == userId).FirstOrDefault();
         }
 
         public List<Review> GetAllReviewsByUser(int userId)

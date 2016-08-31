@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CapitalCoffee.Data.Models;
 using CapitalCoffee.Models;
 using CapitalCoffee.Data.Access;
 using System.Web.Security;
+using System.Net;
+using System.Net.Mail;
 
 namespace CapitalCoffee.Controllers
 {
@@ -33,7 +34,15 @@ namespace CapitalCoffee.Controllers
                 var newUser = new User();
                 var password = user.Password;
                 newUser.Username = user.Username;
-                newUser.EmailAddress = user.Email;
+                if (IsValidEmail(user.Email))
+                {
+                    newUser.EmailAddress = user.Email;
+                }
+                else
+                {
+                    TempData["notice"] = "Invalid Email Address";
+                    return View(user);
+                }
                 userDao.RegisterAccount(newUser, password);
                 return RedirectToAction("Profile", "User", new { id = newUser.UserId });
             }
@@ -56,7 +65,7 @@ namespace CapitalCoffee.Controllers
                 if (loginResult != true)
                 {
                     ViewBag.Error = "Invalid Username or Password";
-                    return View("Login", "User", null);
+                    return View(login);
                 }
 
                 var user = userDao.GetByEmailOrUser(login.EmailOrUsername);
@@ -73,7 +82,7 @@ namespace CapitalCoffee.Controllers
         public ActionResult LogOff()
         {
             Session.Remove("userName");
-
+            Session.Remove("userId");
             if (Request.Cookies["sortCookie"] != null)
             {
                 Response.Cookies["sortCookie"].Expires = DateTime.Now.AddDays(-1);
@@ -112,7 +121,6 @@ namespace CapitalCoffee.Controllers
         {
             if (ModelState.IsValid)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
                 var userDao = new UserDao(db);
                 var photoDao = new PhotoDao(db);
                 var user = userDao.GetById(vm.User.UserId);
@@ -168,7 +176,6 @@ namespace CapitalCoffee.Controllers
             return View(user);
         }
 
-        // POST: /User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -218,6 +225,65 @@ namespace CapitalCoffee.Controllers
             
             return View(vm);
         }
+
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            var vm = new ChangePasswordViewModel();
+            if (Session["userName"] != null)
+            {
+                vm.UserId = Convert.ToInt32(Session["userId"]);
+                return View(vm);
+            }
+            return RedirectToAction("Login");
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel vm)
+        {
+            if(ModelState.IsValid)
+            {
+                var userDao = new UserDao(db);
+                var validPassword = userDao.CheckPassword(vm.UserId, vm.OldPassword);
+                if(validPassword == true)
+                {
+                    if(vm.NewPassword == vm.VerifyNewPassword)
+                    {
+                        userDao.ChangePassword(vm.UserId, vm.NewPassword);
+                        return RedirectToAction("Profile", "User", new { id = vm.UserId });
+                    }
+                }
+                
+            }
+            TempData["notice"] = "One or more of the password fields was incorrect, please try again.";
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        //[HttpPost]
+        //public ActionResult ForgotPassword(ForgotPasswordViewModel vm)
+        //{
+        //    var userDao = new UserDao(db);
+        //    var validEmail = userDao.GetEmail(vm.EmailAddress);
+        //    if(validEmail != null)
+        //    {
+        //        var newPassword = "NewPassword123";
+        //        var body = "<p>Your new password is " + newPassword + "</p>";
+        //        var message = new MailMessage();
+        //        message.To.Add(new MailAdd)
+        //        userDao.ChangePassword(validEmail.UserId, newPassword);
+
+        //    }
+        //    else
+        //    {
+                
+        //    }
+        //}
 
 
     }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using CapitalCoffee.Data.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using CapitalCoffee.Data.Models;
 
 
 namespace CapitalCoffee.Models

@@ -1,0 +1,23 @@
+﻿@model System.Web.Mvc.HandleErrorAttribute
+
+@{
+    ViewBag.Title = "NotFound";
+}
+
+<div>
+    <div id="errorContainer">
+
+        <h3>
+            Error 404:
+        </h3>
+        <h4>
+            It seems this page doesn't exist.
+        </h4>
+    
+        <h6>@Html.ActionLink("Go Back To Home Page", "Index", "Home")</h6>
+        <br />
+        <br />
+    </div>
+</div>
+<div>
+</div> 

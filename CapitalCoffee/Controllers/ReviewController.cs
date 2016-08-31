@@ -20,9 +20,8 @@ namespace CapitalCoffee.Controllers
         [HttpGet]
         public ActionResult Add(int shopId)
         {
-            var userName = (string)(Session["userName"]);
             var userDao = new UserDao(db);
-            var user = userDao.GetByEmailOrUser(userName);
+            var user = userDao.GetByEmailOrUser((string)(Session["userName"]));
             if (user != null)
             {
                 var vm = new AddReviewViewModel();
@@ -53,51 +52,50 @@ namespace CapitalCoffee.Controllers
                 {
                     return RedirectToAction("Details", "Shop", new { id = review.ShopId });
                 }
-                else if (ReviewPictures[0] != null && ReviewPictures.Count > 0 && ReviewPictures.Count < 6)
-                {
-                    foreach (var p in ReviewPictures)
-                    {
-                        if(VerifyPhoto(p) == true)
-                        {
-                            var image = new ReviewPicture()
-                            {
-                                ReviewId = review.Review.ReviewId,
-                                MimeType = p.ContentType,
-                                Picture = new byte[p.ContentLength]
-                            };
-
-                            p.InputStream.Read(image.Picture, 0, p.ContentLength);
-
-                            photoDao.UploadReviewPicture(image);
-                        }
-                        else
-                        {
-                            TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
-                            reviewDao.Delete(review.Review.ReviewId);
-                            return View(review);
-                        }
-                    }
-                    return RedirectToAction("Details", "Shop", new { id = review.ShopId });
-                }
-                else
+                else if(ReviewPictures.Count > 5)
                 {
                     TempData["notice"] = "Too many pictures. Please include 5 pictures or less";
                     reviewDao.Delete(review.Review.ReviewId);
                     return View(review);
                 }
+               
+                foreach (var p in ReviewPictures)
+                {
+                    if(VerifyPhoto(p) == true)
+                    {
+                        var image = new ReviewPicture()
+                        {
+                            ReviewId = review.Review.ReviewId,
+                            MimeType = p.ContentType,
+                            Picture = new byte[p.ContentLength]
+                        };
+
+                        p.InputStream.Read(image.Picture, 0, p.ContentLength);
+
+                        photoDao.UploadReviewPicture(image);
+                    }
+                    else
+                    {
+                        TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
+                        reviewDao.Delete(review.Review.ReviewId);
+                        return View(review);
+                    }
+                }
+     
+                return RedirectToAction("Details", "Shop", new { id = review.ShopId });
+                
             }
 
             return View(review);
         }
 
-        // GET: /Review/Edit/5
+        [HttpGet]
         public ActionResult Edit(int shopId)
         {
-            var userName = (string)(Session["userName"]);
-            if(userName != null)
+            var userDao = new UserDao(db);
+            var user = userDao.GetByEmailOrUser((string)(Session["userName"]));
+            if(user != null)
             {
-                var userDao = new UserDao(db);
-                var user = userDao.GetByEmailOrUser(userName);
                 var reviewDao = new ReviewDao(db);
                 Review review = reviewDao.GetReviewToEdit(user.UserId, shopId);
 
@@ -107,9 +105,7 @@ namespace CapitalCoffee.Controllers
             return RedirectToAction("Index", "Home", null); 
         }
 
-        // POST: /Review/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Review review)
@@ -117,10 +113,6 @@ namespace CapitalCoffee.Controllers
             if (ModelState.IsValid)
             {
                 var reviewDao = new ReviewDao(db);
-                //var editedReview = reviewDao.GetById(review.ReviewId);
-                //editedReview.Rating = review.Rating;
-                //editedReview.ReviewText = review.ReviewText;
-
                 reviewDao.EditReview(review);
                 return RedirectToAction("Details", "Shop", new {id = review.ShopId});
             }
@@ -128,7 +120,7 @@ namespace CapitalCoffee.Controllers
             return View(review);
         }
 
-        // GET: /Review/Delete/5
+        [HttpGet]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -143,7 +135,7 @@ namespace CapitalCoffee.Controllers
             return View(review);
         }
 
-        // POST: /Review/Delete/5
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

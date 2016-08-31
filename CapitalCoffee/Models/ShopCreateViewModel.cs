@@ -1,9 +1,6 @@
 ﻿using CapitalCoffee.Data.Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Web;
 
 namespace CapitalCoffee.Models
 {
@@ -44,6 +41,5 @@ namespace CapitalCoffee.Models
         public Shop Shop { get; set; }
         [DisplayName("Default Shop Photo:")]
         public DefaultShopPicture DefaultShopPicture { get; set; }
-     
     }
 }

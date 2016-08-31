@@ -31,6 +31,12 @@ namespace CapitalCoffee.Controllers
 
             var shopDao = new ShopDao(db);
             var shopList = shopDao.GetAll(searchTerm, sortTerm);
+            
+            foreach(var s in shopList)
+            {
+                s.AverageRating = shopDao.GetAverageRating(s.ShopId);
+            }
+
             var pagedList = shopList.ToPagedList(pageNumber, pageSize);
 
            

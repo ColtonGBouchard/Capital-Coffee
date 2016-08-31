@@ -13,8 +13,7 @@ namespace CapitalCoffee.Controllers
     {
         private CapitalCoffeeContext db = new CapitalCoffeeContext();
 
-        //
-        // GET: /Photo/
+        [HttpGet]
         public ActionResult ShowReviewPicture(int id)
         {
             var shopDao = new ShopDao(db);

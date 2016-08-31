@@ -4,10 +4,12 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
+<h2 style="color: white;">Login</h2>
 @if(ViewBag.Error != null)
 {
-    @ViewBag.Error
+    <div id="invalidLogin">
+        @ViewBag.Error
+    </div>
 }
 <div class="row">
     <div class="col-md-8">
@@ -29,18 +31,11 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Password)
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
-                        </div>
-                    </div>
-                </div>
+          
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Log in" class="btn btn-default login" />

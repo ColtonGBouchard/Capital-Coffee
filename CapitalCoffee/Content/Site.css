@@ -42,18 +42,20 @@ input[type="checkbox"].input-validation-error {
 }
 
 #avgRating {
-    border: 1px solid black;
+    border: 1px solid #56acc9;
     padding: 10px;
     margin: 10px;
     text-align: center;
     border-radius: 10px;
+    background-color: #dfd2c9;
 }
 
 #shopInfoTable{
-    border: 1px solid black;
+    border: 1px solid #56acc9;
     width: 900px;
     margin: 10px;
     border-radius: 10px;
+    background-color: #dfd2c9;
 }
 
 #basicInfo{
@@ -95,17 +97,19 @@ th, td {
 }
 
 #map{
-    height: 500px;
+    height: 300px;
     width: 1000px;
     margin: 0 auto;
     margin-top: 10px;
+    border: 7px solid #814c3a;
 }
 
 #shopListHeader{
-    background-color: lightgray;
+    background-color: #814c3a;
     height: 50px;
     border-radius: 10px;
     margin-top: 10px;
+    color: white;
 }
 
 #shopListHeader > form {
@@ -117,15 +121,17 @@ th, td {
     margin-top: 20px;
 }
 
-#reviewsContainer{
-    
-}
+
 
 #singleShop{
     padding: 2px;
-    border: 1px solid gray;
+    border: 1px solid #814c3a;
     margin: 5px;
     border-radius: 10px;
+    padding-left: 10px;
+    background-color: #dfd2c9;
+    font-family: Georgia;
+
 }
 
 #shopPagedList{
@@ -153,7 +159,7 @@ th, td {
 
 #reviewListHeader{
     padding: 10px;
-    background-color: lightgray;
+    background-color: #814c3a;
     border-radius: 10px;
     margin-bottom: 10px;
 }
@@ -161,13 +167,16 @@ th, td {
 
 #userReviews{
     float: right;
+    min-height: 500px;
 }
 
 #profileReviewDiv{
-    border: 1px solid black;
+    border: 1px solid #56acc9;
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
+    background-color: #dfd2c9;
+
 }
 
 #profilePicture{
@@ -196,10 +205,11 @@ th, td {
 }
 
 #profile{
-    border: 1px solid black;
-    margin-top: 10px;
+    border: 1px solid #56acc9;
+    margin-top: 20px;
     border-radius: 10px;
     text-align: center;
+    background-color: #dfd2c9;
 }
 
 #userPhoto{
@@ -217,11 +227,13 @@ th, td {
 }
 
 #emptyReviewDiv {
-    border: 1px solid black;
+    border: 1px solid #56acc9;
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
     text-align: center;
+    background-color: #dfd2c9;
+
 }
 
 #addDefaultShopPhoto{
@@ -235,3 +247,122 @@ th, td {
     top: -20px;
     left: 150px;
 }
+
+#userInfo, #reviewInfo{
+    margin-bottom: 10px;
+}
+
+body{
+   background: url("http://az616578.vo.msecnd.net/files/2016/05/05/635980743690830477-989314837_12324367965_35eef6a11c_o.jpg");
+}
+
+.capitalCoffeeNavbar{
+    background-color: #56acc9;
+}
+
+
+navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+color: #000;  /*Sets the text hover color on navbar*/
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >   
+ a:hover, .navbar-default .navbar-nav > .active > a:focus {
+color: white; /*BACKGROUND color for active*/
+background-color: #030033;
+}
+
+  .navbar-default {
+    background-color: #56acc9;
+    border-color: #030033;
+}
+
+  .dropdown-menu > li > a:hover,
+   .dropdown-menu > li > a:focus {
+    color: #262626;
+   text-decoration: none;
+  background-color: #66CCFF;  /*change color of links in drop down here*/
+   }
+
+ .nav > li > a:hover,
+ .nav > li > a:focus {
+    text-decoration: none;
+    background-color: silver; /*Change rollover cell color here*/
+  }
+
+
+  .navbar-default .navbar-nav > li > a {
+   color: white; /*Change active text color here*/
+    }
+
+.navbar-default .navbar-brand {
+    color: white;
+}
+
+
+body{
+    font-family: Georgia;
+}
+
+#loginForm, #changePassword, .register-form, #shopLocation, #shopUrls, #shopHours, .editReview, .addReview, .create-header, #deleteShop{
+    color: white;
+    background-color: #814c3a;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#reviewInfo, #userInfo{
+    background-color: #dfd2c9;
+    border: 1px solid #56acc9;
+}
+
+#editShop, #delete{
+    margin-right: 3px;
+}
+
+.editText, .addReviewText, .registerText{
+    color: black;
+}
+
+.footer{
+   background-color: #dfd2c9;
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:30px;
+   width:100%;
+   margin-top: 10px;
+}
+
+#invalidEmail{
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+ #invalidLogin{
+     color: white;
+    font-size: 20px;
+ }
+
+ #errorContainer{
+    
+    border: 1px solid rgb(0, 148, 255);
+    border-radius: 7px;
+    text-align: center;
+    height: 325px;
+    background-color: rgba(255, 255, 255, 0.70);
+    justify-content: center;
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 2.5em;
+ 
+}
+
+ .addShop{
+     color: black;
+ }
+
+ #createButtons{
+     margin-bottom: 20px;
+ }
+

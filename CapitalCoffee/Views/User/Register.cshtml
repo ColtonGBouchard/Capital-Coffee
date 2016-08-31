@@ -4,20 +4,28 @@
     ViewBag.Title = "Register";
 }
 
-<h2>Register Account</h2>
+@if (TempData["notice"] != null)
+{
+    <div id="invalidEmail">
+        @Html.Encode(TempData["notice"])
+    </div>
+}
+
+<h2 style="color: white;">Register Account</h2>
 
 @using(Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        @*<h4>Username</h4>
-        <hr/>*@
+
+
+    <div class="form-horizontal register-form">
+       
         @Html.ValidationSummary(true)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Username, new { @class = "control-label col-md-2"})
-            <div class="col-md-10">
+            <div class="col-md-10 registerText">
                 @Html.TextBoxFor(model => model.Username, new { autocomplete = "off"})
                 @Html.ValidationMessageFor(model => model.Username)
             </div>
@@ -25,7 +33,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 registerText">
                 @Html.TextBoxFor(model => model.Email, new { autocomplete = "off" })
                 @Html.ValidationMessageFor(model => model.Email)
             </div>
@@ -33,7 +41,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 registerText">
                 @Html.PasswordFor(model => model.Password, new { autocomplete = "off" })
                 @Html.ValidationMessageFor(model => model.Password)
             </div>
@@ -41,7 +49,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.VerifyPassword, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10 registerText">
                 @Html.PasswordFor(model => model.VerifyPassword, new { autocomplete = "off" })
                 @Html.ValidationMessageFor(model => model.VerifyPassword)
             </div>

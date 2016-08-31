@@ -4,15 +4,14 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2 style="color: white;">Edit</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        @*<h4>Review for @Model.Review.Shop.Name by @Model.Review.User.Username</h4>*@
+    <div class="form-horizontal editReview">
   
         <div class="form-group">
             @Html.HiddenFor(model => model.ReviewId, new { @class = "control-label col-md-2" })
@@ -48,7 +47,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.ReviewText, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-10  editText">
                 @Html.EditorFor(model => model.ReviewText)
                 @Html.ValidationMessageFor(model => model.ReviewText)
             </div>
@@ -56,15 +55,14 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-info" />
+                @Html.ActionLink("Back", "Details", "Shop", new { id = Model.ShopId }, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jquery")

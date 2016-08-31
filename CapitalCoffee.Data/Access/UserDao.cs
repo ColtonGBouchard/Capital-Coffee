@@ -1,10 +1,5 @@
 ﻿using CapitalCoffee.Data.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
 using System.Data.Entity;
 
 
@@ -56,6 +51,22 @@ namespace CapitalCoffee.Data.Access
             return false;
         }
 
+        public bool CheckPassword(int userId, string password)
+        {
+            HashComputer hashComputer = new HashComputer();
+            PasswordManager pm = new PasswordManager();
+            User user = context.Users.Where(u => u.UserId == userId).FirstOrDefault();
+            if (user != null)
+            {
+                var hash = user.PasswordHash;
+                var salt = user.Salt;
+                var hashedPassword = pm.GeneratePasswordHash(password, salt);
+                return hash == hashedPassword;
+            }
+
+            return false;
+        }
+
         public User GetById(int id)
         {
             return context.Users.Where(u => u.UserId == id).FirstOrDefault();
@@ -76,7 +87,27 @@ namespace CapitalCoffee.Data.Access
             return false;
         }
 
+        public void ChangePassword(int userId, string password)
+        {
+            var user = context.Users.Find(userId);
 
-       
+            HashComputer hashComputer = new HashComputer();
+            PasswordManager passwordManager = new PasswordManager();
+            string salt = SaltGenerator.GetSaltString();
+            var hash = passwordManager.GeneratePasswordHash(password, salt);
+
+            user.PasswordHash = hash;
+            user.Salt = salt;
+
+            context.Entry(user).State = EntityState.Modified;
+            context.SaveChanges();
+        }
+
+        public User GetEmail(string emailAddress)
+        {
+            var user = context.Users.Where(u => u.EmailAddress == emailAddress).FirstOrDefault();
+            return user;
+        }
+      
     }
 }

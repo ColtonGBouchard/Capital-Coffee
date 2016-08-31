@@ -23,8 +23,7 @@ namespace CapitalCoffee.Controllers
             var shopDao = new ShopDao(db);
             var userDao = new UserDao(db);
             var photoDao = new PhotoDao(db);
-            var userName = (string)(Session["userName"]);
-            var user = userDao.GetByEmailOrUser(userName);
+            var user = userDao.GetByEmailOrUser((string)(Session["userName"]));
             
           
             if(user != null)
@@ -56,7 +55,12 @@ namespace CapitalCoffee.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            return View();
+            if(Session["userName"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            return View(new ShopCreateViewModel());
         }
 
 
@@ -74,8 +78,8 @@ namespace CapitalCoffee.Controllers
                         Name = shop.Name,
                         Address1 = shop.Address1,
                         Address2 = shop.Address2,
-                        City = shop.City,
-                        State = shop.State,
+                        City = "Tallahassee",
+                        State = "FL",
                         Zip = shop.Zip,
                         WebsiteUrl = shop.WebsiteUrl,
                         MenuUrl = shop.MenuUrl,
@@ -85,17 +89,26 @@ namespace CapitalCoffee.Controllers
                         IsLocal = shop.IsLocal,
                         HoursOfOperation = shop.HoursOfOperation
                     };
-      
+
 
                 for (int i = 0; i < 7; i++)
                 {
                     newShop.HoursOfOperation[i].DayOfWeek = i;
                 }
-                
-                shopDao.Create(newShop);
+
+                if (shopDao.IsDuplicate(newShop) == false)
+                {
+                    shopDao.Create(newShop);
+                }
+                else
+                {
+                    TempData["notice"] = "That shop already exists.";
+                    return View(shop);
+                }
+
                 if (ShopPicture != null)
                 {
-                    if(VerifyPhoto(ShopPicture) == true)
+                    if (VerifyPhoto(ShopPicture) == true)
                     {
                         var image = new DefaultShopPicture()
                         {
@@ -118,7 +131,6 @@ namespace CapitalCoffee.Controllers
                 return RedirectToAction("Details", "Shop", new { id = newShop.ShopId });
             }
 
-            var errors = ModelState.SelectMany(x => x.Value.Errors.Select(z => z.Exception));
 
             return RedirectToAction("Index", "Home");
         }
@@ -127,6 +139,19 @@ namespace CapitalCoffee.Controllers
         public ActionResult Edit(int id)
         {
             var shopDao = new ShopDao(db);
+            var userDao = new UserDao(db);
+            
+            if (Session["userName"] == null)
+            {
+                return View("Login", "User");
+            }
+            
+            var user = userDao.GetByEmailOrUser((string)Session["userName"]);
+            if(userDao.IsAdmin(user) == false)
+            {
+                return RedirectToAction("Forbidden", "Error");
+            }
+            
             Shop shop = shopDao.GetById(id);
             if (shop == null)
             {
@@ -163,7 +188,7 @@ namespace CapitalCoffee.Controllers
         {
             var shopDao = new ShopDao(db);
             shopDao.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)

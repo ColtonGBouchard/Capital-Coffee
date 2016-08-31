@@ -29,11 +29,7 @@ namespace CapitalCoffee.Data.Access
             return context.DefaultShopPictures.Where(p => p.ShopId == shopId).FirstOrDefault();
         }
 
-        public ReviewPicture GetBinaryData(int id)
-        {
-            return context.ReviewPictures.Find(id);
-        }
-
+        
         public ProfilePicture GetPictureForUser(int id)
         {
             return context.ProfilePictures.Where(p => p.UserId == id).FirstOrDefault();
