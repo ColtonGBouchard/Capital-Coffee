@@ -350,7 +350,6 @@
     <Content Include="Views\Review\Add.cshtml" />
     <Content Include="Views\Shop\Create.cshtml" />
     <Content Include="Views\User\Profile.cshtml" />
-    <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\_Edit.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\Internal.cshtml" />

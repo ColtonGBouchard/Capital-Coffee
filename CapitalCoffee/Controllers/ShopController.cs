@@ -70,67 +70,71 @@ namespace CapitalCoffee.Controllers
         {
             if (ModelState.IsValid)
             {
-                var shopDao = new ShopDao(db);
-                var photoDao = new PhotoDao(db);
-                var hoursDao = new HoursOfOperationDao(db);
-                var newShop = new Shop()
-                    {
-                        Name = shop.Name,
-                        Address1 = shop.Address1,
-                        Address2 = shop.Address2,
-                        City = "Tallahassee",
-                        State = "FL",
-                        Zip = shop.Zip,
-                        WebsiteUrl = shop.WebsiteUrl,
-                        MenuUrl = shop.MenuUrl,
-                        FacebookUrl = shop.FacebookUrl,
-                        TwitterUrl = shop.TwitterUrl,
-                        InstagramUrl = shop.InstagramUrl,
-                        IsLocal = shop.IsLocal,
-                        HoursOfOperation = shop.HoursOfOperation
-                    };
-
-
-                for (int i = 0; i < 7; i++)
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    newShop.HoursOfOperation[i].DayOfWeek = i;
-                }
-
-                if (shopDao.IsDuplicate(newShop) == false)
-                {
-                    shopDao.Create(newShop);
-                }
-                else
-                {
-                    TempData["notice"] = "That shop already exists.";
-                    return View(shop);
-                }
-
-                if (ShopPicture != null)
-                {
-                    if (VerifyPhoto(ShopPicture) == true)
-                    {
-                        var image = new DefaultShopPicture()
+                    var shopDao = new ShopDao(db);
+                    var photoDao = new PhotoDao(db);
+                    var hoursDao = new HoursOfOperationDao(db);
+                    var newShop = new Shop()
                         {
-                            ShopId = newShop.ShopId,
-                            MimeType = ShopPicture.ContentType,
-                            Picture = new byte[ShopPicture.ContentLength]
+                            Name = shop.Name,
+                            Address1 = shop.Address1,
+                            Address2 = shop.Address2,
+                            City = "Tallahassee",
+                            State = "FL",
+                            Zip = shop.Zip,
+                            WebsiteUrl = shop.WebsiteUrl,
+                            MenuUrl = shop.MenuUrl,
+                            FacebookUrl = shop.FacebookUrl,
+                            TwitterUrl = shop.TwitterUrl,
+                            InstagramUrl = shop.InstagramUrl,
+                            IsLocal = shop.IsLocal,
+                            HoursOfOperation = shop.HoursOfOperation
                         };
 
-                        ShopPicture.InputStream.Read(image.Picture, 0, ShopPicture.ContentLength);
 
-                        photoDao.UploadDefaultPicture(image);
+                    for (int i = 0; i < 7; i++)
+                    {
+                        newShop.HoursOfOperation[i].DayOfWeek = i;
+                    }
+
+                    if (shopDao.IsDuplicate(newShop) == false)
+                    {
+                        shopDao.Create(newShop);
                     }
                     else
                     {
-                        TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
-                        shopDao.Delete(newShop.ShopId);
+                        TempData["notice"] = "That shop already exists.";
                         return View(shop);
                     }
-                }
-                return RedirectToAction("Details", "Shop", new { id = newShop.ShopId });
-            }
 
+                    if (ShopPicture != null)
+                    {
+                        if (VerifyPhoto(ShopPicture) == true)
+                        {
+                            var image = new DefaultShopPicture()
+                            {
+                                ShopId = newShop.ShopId,
+                                MimeType = ShopPicture.ContentType,
+                                Picture = new byte[ShopPicture.ContentLength]
+                            };
+
+                            ShopPicture.InputStream.Read(image.Picture, 0, ShopPicture.ContentLength);
+
+                            photoDao.UploadDefaultPicture(image);
+                        }
+                        else
+                        {
+                            TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
+                            dbContextTransaction.Rollback();
+                            return View(shop);
+                        }
+                    }
+
+                    dbContextTransaction.Commit();
+                    return RedirectToAction("Details", "Shop", new { id = newShop.ShopId });
+                }
+            }
 
             return RedirectToAction("Index", "Home");
         }

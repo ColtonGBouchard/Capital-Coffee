@@ -4,6 +4,13 @@
     ViewBag.Title = "Profile";
 }
 
+@if (TempData["notice"] != null)
+{
+    <div id="invalidEmail" style="color:white;">
+        @Html.Encode(TempData["notice"])
+    </div>
+}
+
 <div id="profileContainer">
     <div id="profilePicture" class="col-lg-2 col-lg-offset-2">
         @if (Model.ProfilePicture == null)

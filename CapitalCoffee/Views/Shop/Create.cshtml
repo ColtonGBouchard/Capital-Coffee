@@ -75,7 +75,7 @@
             </div>
             <div class="form-group col-lg-8 col-lg-offset-4" id="addDefaultShopPhoto">
                 @Html.LabelFor(model => model.DefaultShopPicture, new { @class = "control-label white-label" })
-                <input name="ShopPicture" type="file" accept="image/gif, image/jpeg, image/png" id="shopPicture" multiple />
+                <input name="ShopPicture" type="file" accept="image/gif, image/jpeg, image/png" id="shopPicture"/>
                 @Html.ValidationMessageFor(model => model.DefaultShopPicture)
             </div>
         </div>

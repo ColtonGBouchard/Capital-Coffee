@@ -121,43 +121,49 @@ namespace CapitalCoffee.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userDao = new UserDao(db);
-                var photoDao = new PhotoDao(db);
-                var user = userDao.GetById(vm.User.UserId);
-
-                user.Username = vm.User.Username;
-                user.Tagline = vm.User.Tagline;
-                user.EmailAddress = vm.User.EmailAddress;
-
-                userDao.Edit(user);
-
-                if(photo != null)
+                using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-                    photoDao.DeleteProfilePicture(vm.User.UserId);
 
-                    if (VerifyPhoto(photo) == true)
+                    var userDao = new UserDao(db);
+                    var photoDao = new PhotoDao(db);
+                    var user = userDao.GetById(vm.User.UserId);
+
+                    user.Username = vm.User.Username;
+                    Session["userName"] = user.Username;
+                    user.Tagline = vm.User.Tagline;
+                    user.EmailAddress = vm.User.EmailAddress;
+
+                    userDao.Edit(user);
+
+                    if (photo != null)
                     {
-                        var image = new ProfilePicture()
+                        photoDao.DeleteProfilePicture(vm.User.UserId);
+
+                        if (VerifyPhoto(photo) == true)
                         {
-                            UserId = vm.User.UserId,
-                            MimeType = photo.ContentType,
-                            Picture = new byte[photo.ContentLength]
-                        };
+                            var image = new ProfilePicture()
+                            {
+                                UserId = vm.User.UserId,
+                                MimeType = photo.ContentType,
+                                Picture = new byte[photo.ContentLength]
+                            };
 
-                        photo.InputStream.Read(image.Picture, 0, photo.ContentLength);
+                            photo.InputStream.Read(image.Picture, 0, photo.ContentLength);
 
-                        photoDao.UploadProfilePicture(image);
+                            photoDao.UploadProfilePicture(image);
+                        }
+                        else
+                        {
+                            TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
+                            dbContextTransaction.Rollback();
+                            return RedirectToAction("Profile", "User", new { id = vm.User.UserId });
+                        }
                     }
-                    else
-                    {
-                        TempData["notice"] = "Invalid file type or file size. Please upload jpeg, gif or png that is 5mb or less.";
-                        return View(vm);
-                    }
+
+                    dbContextTransaction.Commit();
+                    return RedirectToAction("Profile", "User", new { id = vm.User.UserId });
                 }
-
-                return RedirectToAction("Profile", "User", new { id = vm.User.UserId });
             }
-
             return View(vm);
         }
 
