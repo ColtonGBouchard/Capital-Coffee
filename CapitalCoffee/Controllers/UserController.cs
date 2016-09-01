@@ -265,25 +265,33 @@ namespace CapitalCoffee.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult ForgotPassword(ForgotPasswordViewModel vm)
-        //{
-        //    var userDao = new UserDao(db);
-        //    var validEmail = userDao.GetEmail(vm.EmailAddress);
-        //    if(validEmail != null)
-        //    {
-        //        var newPassword = "NewPassword123";
-        //        var body = "<p>Your new password is " + newPassword + "</p>";
-        //        var message = new MailMessage();
-        //        message.To.Add(new MailAdd)
-        //        userDao.ChangePassword(validEmail.UserId, newPassword);
+        [HttpPost]
+        public ActionResult ForgotPassword(ForgotPasswordViewModel vm)
+        {
+            var userDao = new UserDao(db);
+            var validEmail = userDao.GetEmail(vm.EmailAddress);
+            if(validEmail != null)
+            {
+                var newPassword = GetPassword();
+                var body = "<p>Your new password is " + newPassword + "</p>";
+                var message = new MailMessage();
+                message.To.Add(new MailAddress(vm.EmailAddress));
+                message.Subject = "Forgot Password";
+                message.Body = string.Format(body, vm.Message);
+                message.IsBodyHtml = true;
+                userDao.ChangePassword(validEmail.UserId, newPassword);
 
-        //    }
-        //    else
-        //    {
-                
-        //    }
-        //}
+                SmtpClient client = new SmtpClient();
+
+                client.Send(message);
+
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                return RedirectToAction("Login", "User");
+            }
+        }
 
 
     }

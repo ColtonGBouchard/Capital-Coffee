@@ -20,25 +20,25 @@ namespace CapitalCoffee.Data.Access
         }
 
      
-        public List<Shop> GetAll(string searchTerm = " ", string orderTerm = " ")
+        public List<Shop> GetAll(string searchTerm = " ", string orderTerm = "")
         {
             var shopList = context.Shops.Where(s => s.Name.Contains(searchTerm)).OrderBy(s => s.Name).ToList();
-            //foreach (var s in shopList)
-            //{
-            //    s.Reviews = context.Reviews.Where(r => r.ShopId == s.ShopId).ToList();
+            foreach (var s in shopList)
+            {
+                s.Reviews = context.Reviews.Where(r => r.ShopId == s.ShopId).ToList();
 
-            //    s.Reviews = context.Reviews.Where(r => r.ShopId == s.ShopId).ToList();
+                s.Reviews = context.Reviews.Where(r => r.ShopId == s.ShopId).ToList();
 
-            //    if (s.Reviews.Count() == 0)
-            //    {
-            //        return null;
-            //    }
-            //    else
-            //    {
-            //        var averageRating = s.Reviews.Sum(r => r.Rating) / s.Reviews.Count();
-            //        s.AverageRating = averageRating;
-            //    }
-            //}
+                if (s.Reviews.Count() == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    var averageRating = s.Reviews.Sum(r => r.Rating) / s.Reviews.Count();
+                    s.AverageRating = averageRating;
+                }
+            }
 
             if (orderTerm == "rating")
             {
@@ -61,9 +61,16 @@ namespace CapitalCoffee.Data.Access
             Shop shop = context.Shops.Find(shopId);
 
             var hours = context.HoursOfOperation.Where(h => h.ShopId == shopId);
+            var reviews = context.Reviews.Where(r => r.ShopId == shopId);
+
             foreach(var h in hours)
             {
                 context.HoursOfOperation.Remove(h);
+            }
+
+            foreach(var r in reviews)
+            {
+                context.Reviews.Remove(r);
             }
 
             context.Shops.Remove(shop);

@@ -34,7 +34,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
             <div class="col-md-10 registerText">
-                @Html.TextBoxFor(model => model.Email, new { autocomplete = "off" })
+                @Html.TextAreaFor(model => model.Email, new { autocomplete = "off", style="width: 250px; height: 27px;"})
                 @Html.ValidationMessageFor(model => model.Email)
             </div>
         </div>
