@@ -44,14 +44,16 @@ namespace CapitalCoffee.Controllers
             {
                 using (var dbContextTransaction = db.Database.BeginTransaction())
                 {
-            
                     var reviewDao = new ReviewDao(db);
                     var photoDao = new PhotoDao(db);
+
                     review.Review = new Review();
+
                     review.Review.UserId = review.UserId;
                     review.Review.ShopId = review.ShopId;
                     review.Review.Rating = review.Rating;
                     review.Review.ReviewText = review.ReviewText;
+
                     reviewDao.AddReview(review.Review);
 
                     if (ReviewPictures[0] == null)
@@ -90,7 +92,6 @@ namespace CapitalCoffee.Controllers
 
                     dbContextTransaction.Commit();
                     return RedirectToAction("Details", "Shop", new { id = review.ShopId });
-
                 }
             }
 
@@ -128,31 +129,31 @@ namespace CapitalCoffee.Controllers
             return View(review);
         }
 
-        [HttpGet]
-        public ActionResult Delete(int id)
-        {
-            var reviewDao = new ReviewDao(db);
+        //[HttpGet]
+        //public ActionResult Delete(int id)
+        //{
+        //    var reviewDao = new ReviewDao(db);
 
-            var review = reviewDao.GetById(id);
+        //    var review = reviewDao.GetById(id);
 
-            if (review == null)
-            {
-                return HttpNotFound();
-            }
+        //    if (review == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            return View(review);
-        }
+        //    return View(review);
+        //}
 
         
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            var reviewDao = new ReviewDao(db);
-            reviewDao.Delete(id);
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    var reviewDao = new ReviewDao(db);
+        //    reviewDao.Delete(id);
 
-            return RedirectToAction("Index");
-        }
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {

@@ -15,6 +15,10 @@ namespace CapitalCoffee.Data.Access
             this.context = context;
         }
 
+        public Review GetById(int id)
+        {
+            return context.Reviews.Find(id);
+        }
 
         public Review GetReviewToEdit(int userId, int shopId)
         {
